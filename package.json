@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/CapUlDis/vk-bot#readme",
   "dependencies": {
-    "botact": "^2.4.2"
+    "botact": "^2.4.2",
+    "express": "^4.17.1"
   }
 }
