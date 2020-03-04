@@ -19,6 +19,6 @@
   "dependencies": {
     "botact": "^2.4.2",
     "express": "^4.17.1",
-    "google-spreadsheet": "^3.0.8"
+    "google-spreadsheet": "^3.0.9"
   }
 }
