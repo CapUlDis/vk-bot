@@ -1,6 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const {Botact} = require('botact')
+const {Botact} = require('node-vk-bot-api')
 
 const app = express()
 const bot = new Botact({
