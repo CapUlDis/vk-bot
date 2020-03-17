@@ -18,6 +18,7 @@ asynс function acceessSpreadsheet(doc) {
     await doc.useServiceAccountAuth(creds);
     await doc.loadInfo();
 }();
+
 // bot.on((ctx) => {
 //     console.log(ctx.body);
 //     ctx.reply('assert');
@@ -33,4 +34,4 @@ app.use(bodyParser.json());
 
 app.post('/', bot.webhookCallback);
 
-app.listen(80);
+app.listen(100);
