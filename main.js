@@ -12,23 +12,31 @@ const bot = new VKbot({
 });
 
 
-const Tableduty = new GoogleSpreadsheet('1_Wah-_jNWevQMYtXKCv9Zog3isPT2xzxzdkgm-0qLUo');
+const tableduty = new GoogleSpreadsheet('1_Wah-_jNWevQMYtXKCv9Zog3isPT2xzxzdkgm-0qLUo');
 const creds = require('./client_secret.json');
-asynс function acceessSpreadsheet(doc) {
-    await doc.useServiceAccountAuth(creds);
-    await doc.loadInfo();
-}();
 
-// bot.on((ctx) => {
-//     console.log(ctx.body);
-//     ctx.reply('assert');
-// });
+
 
 bot.command('бот?', (ctx) => {
     ctx.reply('КТО?!');
 });
 
-// bot.startPolling();
+bot.command('дежурство', (ctx) => {
+    (async () => {
+        await tableduty.useServiceAccountAuth(creds);
+        await tableduty.loadInfo();
+        const sheet = tableduty.sheetsByIndex[0];
+        const rows = await sheet.getRows();
+        ctx.reply(sheet.headerValues);
+        for (i = 0; i <= 7; i++) {
+            ctx.reply(`${rows[i].Период} ${rows[i].Кухня} ${rows[i].КВТ}`);
+        };
+    })();
+});
+
+bot.command('тест1', (ctx) => {
+    ctx.reply('Ребята не стоит вскрывать эту тему. Вы молодые, шутливые, вам все легко. Это не то. Это не Чикатило и даже не архивы спецслужб. Сюда лучше не лезть. Серьезно, любой из вас будет жалеть. Лучше закройте тему и забудьте что тут писалось. Я вполне понимаю что данным сообщением вызову дополнительный интерес, но хочу сразу предостеречь пытливых - стоп. Остальные просто не найдут.');
+});
 
 app.use(bodyParser.json());
 

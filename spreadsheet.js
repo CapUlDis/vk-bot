@@ -64,15 +64,10 @@ const creds = require('./client_secret.json');
 // }
 
 
-const duty_table = new GoogleSpreadsheet('1_Wah-_jNWevQMYtXKCv9Zog3isPT2xzxzdkgm-0qLUo');
-const dt = null;
 
-async function getDoc(doc) {
+doc = new GoogleSpreadsheet('1_Wah-_jNWevQMYtXKCv9Zog3isPT2xzxzdkgm-0qLUo');
+(async () => {
     await doc.useServiceAccountAuth(creds);
     await doc.loadInfo();
-    return doc;
-}
-
-getDoc(duty_table).then();
-console.log(duty_table);
-
+    return doc
+})().then(doc => {console.log(doc.title)});
