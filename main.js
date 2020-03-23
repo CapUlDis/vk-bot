@@ -1,8 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const VKbot = require('node-vk-bot-api/lib');
-const { GoogleSpreadsheet } = require('google-spreadsheet');
-
+const { GoogleTable } = require('./spreadsheet');
 
 
 const app = express();
@@ -10,10 +9,7 @@ const bot = new VKbot({
     token: 'd4b54aac31841a8c5e570bd193bf624fc50fda63fe890d83041d5491b70d64d84b50b974de9a245c116c5',
     confirmation: '7d990e40'
 });
-
-
-const tableduty = new GoogleSpreadsheet('1_Wah-_jNWevQMYtXKCv9Zog3isPT2xzxzdkgm-0qLUo');
-const creds = require('./client_secret.json');
+const table_duty = new GoogleTable('1_Wah-_jNWevQMYtXKCv9Zog3isPT2xzxzdkgm-0qLUo');
 
 
 
@@ -22,16 +18,13 @@ bot.command('бот?', (ctx) => {
 });
 
 bot.command('дежурство', (ctx) => {
-    (async () => {
-        await tableduty.useServiceAccountAuth(creds);
-        await tableduty.loadInfo();
-        const sheet = tableduty.sheetsByIndex[0];
-        const rows = await sheet.getRows();
-        ctx.reply(sheet.headerValues);
+    table_duty.getDocInfo().then(() => {
+        let bot_ans = table_duty.sheet.title + '\n' + table_duty.sheet.headerValues.join(' ') + '\n';
         for (i = 0; i <= 7; i++) {
-            ctx.reply(`${rows[i].Период} ${rows[i].Кухня} ${rows[i].КВТ}`);
-        };
-    })();
+            bot_ans += `${table_duty.rows[i].Период} ${table_duty.rows[i].Кухня} ${table_duty.rows[i].КВТ}` + '\n';
+        }
+        ctx.reply(bot_ans);
+    })
 });
 
 bot.command('тест1', (ctx) => {
