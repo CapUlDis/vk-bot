@@ -26,8 +26,8 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: '13.x'
-      run: npm ci
-      run: npm test
+    - run: npm ci
+    - run: npm test
       env:
         CI: true
         SPREADSHEET_ID: 1_Wah-_jNWevQMYtXKCv9Zog3isPT2xzxzdkgm-0qLUo 
