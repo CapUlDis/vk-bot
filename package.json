@@ -2,8 +2,12 @@
   "name": "vk-bot",
   "version": "1.0.0",
   "description": "My first js vk-bot",
-  "main": "index.js",
+  "engines": {
+    "node": "13.x"
+  },
+  "main": "main.js",
   "scripts": {
+    "start": "node main.js",
     "test": "mocha"
   },
   "repository": {
