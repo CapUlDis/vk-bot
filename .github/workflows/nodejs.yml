@@ -22,6 +22,7 @@ jobs:
       run: ./.github/scripts/decrypt_secret.sh
       env:
         PASSPHRASE: ${{ secrets.PASSPHRASE }}
+        VK_BOT_DIR: /home/runner/work/vk-bot/vk-bot
     - name: Use Node.js 
       uses: actions/setup-node@v1
       with:
