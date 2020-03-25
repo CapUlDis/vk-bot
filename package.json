@@ -7,9 +7,8 @@
   },
   "main": "main.js",
   "scripts": {
-    "start": "node main.js",
-    "test": "mocha",
-    "heroku-postbuild": "echo This runs afterwards."
+    "start": "./.github/scripts/decrypt_secret.sh ; node main.js",
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
