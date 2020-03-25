@@ -1,1 +1,1 @@
-web: ./.github/scripts/decrypt_secret.sh && sudo node main.js
+web: ./.github/scripts/decrypt_secret.sh && node main.js
