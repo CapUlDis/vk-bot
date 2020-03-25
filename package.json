@@ -7,7 +7,7 @@
   },
   "main": "main.js",
   "scripts": {
-    "start": "./.github/scripts/decrypt_secret.sh ; node main.js",
+    "start": "node main.js",
     "test": "mocha"
   },
   "repository": {
