@@ -8,7 +8,8 @@
   "main": "main.js",
   "scripts": {
     "start": "node main.js",
-    "test": "mocha"
+    "test": "mocha",
+    "heroku-postbuild": "echo This runs afterwards."
   },
   "repository": {
     "type": "git",
