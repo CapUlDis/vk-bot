@@ -1,1 +1,1 @@
-web: ./.github/scripts/decrypt_secret.sh && cat client_secret.json
+web: ./.github/scripts/decrypt_secret.sh && node main.js
