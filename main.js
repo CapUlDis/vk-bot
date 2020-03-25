@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const VKbot = require('node-vk-bot-api/lib');
+const PORT = process.env.PORT || 3000
 const { GoogleTable } = require('./spreadsheet');
 require('dotenv').config()
 
@@ -36,4 +37,4 @@ app.use(bodyParser.json());
 
 app.post('/', bot.webhookCallback);
 
-app.listen(5000);
+app.listen(PORT);
