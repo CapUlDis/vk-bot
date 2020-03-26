@@ -50,4 +50,4 @@ app.post('/', bot.webhookCallback);
 app.listen(PORT);
 
 
-module.exports = {logger};
+module.exports = logger;
