@@ -7,7 +7,10 @@ const { GoogleTable } = require('./spreadsheet');
 const pino = require('pino');
 const expressPino = require('express-pino-logger');
 
-const logger = pino({ level: process.env.LOV_LEVEL || 'info'});
+const logger = pino({ 
+    level: process.env.LOV_LEVEL || 'info',
+    prettyPrint: true
+});
 const expressLogger = expressPino({ logger });
 
 const app = express();
