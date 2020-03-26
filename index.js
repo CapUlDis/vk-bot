@@ -48,3 +48,6 @@ app.use(bodyParser.json());
 app.post('/', bot.webhookCallback);
 
 app.listen(PORT);
+
+
+module.exports = {logger};
