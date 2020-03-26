@@ -1,7 +1,11 @@
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const creds = require('./client_secret.json');
-const logger = require('./index').logger;
+const pino = require('pino');
 
+const logger = pino({ 
+    level: process.env.LOV_LEVEL || 'info',
+    prettyPrint: { colorize: true }
+});
 
 class GoogleTable {
     constructor(sheetID) {

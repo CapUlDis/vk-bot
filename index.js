@@ -47,6 +47,3 @@ app.use(bodyParser.json());
 app.post('/', bot.webhookCallback);
 
 app.listen(process.env.PORT || 3000);
-
-
-module.exports = {logger: logger};
