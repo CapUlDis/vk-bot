@@ -13,11 +13,14 @@ class GoogleTable {
     }
 
     async getDocInfo() {
-        await this.doc.useServiceAccountAuth(creds);
-        await this.doc.loadInfo();
-        this.sheet = this.doc.sheetsByIndex[0];
-        this.rows = await this.sheet.getRows();
-        logger.info('It is just a test logger from spreadsheet.js!')
+        try {
+            await this.doc.useServiceAccountAuth(creds);
+            await this.doc.loadInfo();
+            this.sheet = this.doc.sheetsByIndex[0];
+            this.rows = await this.sheet.getRows();
+        } catch (error) {
+            logger.error(error);
+        }
     }
 }
 
