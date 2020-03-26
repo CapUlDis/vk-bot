@@ -49,4 +49,4 @@ app.post('/', bot.webhookCallback);
 app.listen(process.env.PORT || 3000);
 
 
-module.exports = logger;
+module.exports = {logger: logger};
