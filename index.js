@@ -1,10 +1,12 @@
+require('dotenv').config()
 const express = require('express');
 const bodyParser = require('body-parser');
 const VKbot = require('node-vk-bot-api/lib');
 const PORT = process.env.PORT || 3000
 const { GoogleTable } = require('./spreadsheet');
-require('dotenv').config()
+const pino = require('pino');
 
+const logger = pino({ level: process.env.LOV_LEVEL || 'info'});
 
 const app = express();
 const bot = new VKbot({
@@ -16,6 +18,7 @@ const table_duty = new GoogleTable(process.env.SPREADSHEET_ID);
 
 
 bot.command('бот?', (ctx) => {
+    logger.info('Test logger KTO');
     ctx.reply('КТО?!');
 });
 
