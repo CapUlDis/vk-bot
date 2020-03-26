@@ -2,7 +2,6 @@ require('dotenv').config()
 const express = require('express');
 const bodyParser = require('body-parser');
 const VKbot = require('node-vk-bot-api/lib');
-const PORT = process.env.PORT || 3000
 const { GoogleTable } = require('./spreadsheet');
 const pino = require('pino');
 const expressPino = require('express-pino-logger');
@@ -47,7 +46,7 @@ app.use(bodyParser.json());
 
 app.post('/', bot.webhookCallback);
 
-app.listen(PORT);
+app.listen(process.env.PORT || 3000);
 
 
-module.exports = { logger };
+module.exports = logger;
