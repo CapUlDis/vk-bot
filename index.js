@@ -23,13 +23,17 @@ bot.command('бот?', (ctx) => {
 });
 
 bot.command('дежурство', (ctx) => {
-    table_duty.getDocInfo().then(() => {
-        let bot_ans = table_duty.sheet.title + '\n' + table_duty.sheet.headerValues.join(' ') + '\n';
-        for (i = 0; i <= 7; i++) {
-            bot_ans += `${table_duty.rows[i].Период} ${table_duty.rows[i].Кухня} ${table_duty.rows[i].КВТ}` + '\n';
-        }
-        ctx.reply(bot_ans);
-    })
+    try {
+        table_duty.getDocInfo().then(() => {
+            let bot_ans = table_duty.sheet.title + '\n' + table_duty.sheet.headerValues.join(' ') + '\n';
+            for (i = 0; i <= 7; i++) {
+                bot_ans += `${table_duty.rows[i].Период} ${table_duty.rows[i].Кухня} ${table_duty.rows[i].КВТ}` + '\n';
+            }
+            ctx.reply(bot_ans);
+        })
+    } catch (error) {
+        ctx.reply('Ошибка: нет доступа к гугл таблице!')
+    }
 });
 
 bot.command('тест1', (ctx) => {
