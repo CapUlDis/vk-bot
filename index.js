@@ -3,22 +3,15 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const VKbot = require('node-vk-bot-api/lib');
 const { GoogleTable } = require('./spreadsheet');
-const pino = require('pino');
-const expressPino = require('express-pino-logger');
 
-const logger = pino({ 
-    level: process.env.LOV_LEVEL || 'info',
-    prettyPrint: { colorize: true, translateTime: true },
-});
-const expressLogger = expressPino({ logger });
 
+const logger = require('./logger');
 const app = express();
 const bot = new VKbot({
     token: process.env.VK_TOKEN,
     confirmation: process.env.VK_CONFIRM
 });
 const table_duty = new GoogleTable(process.env.SPREADSHEET_ID);
-
 
 
 bot.command('бот?', (ctx) => {
@@ -47,3 +40,4 @@ app.use(bodyParser.json());
 app.post('/', bot.webhookCallback);
 
 app.listen(process.env.PORT || 3000);
+

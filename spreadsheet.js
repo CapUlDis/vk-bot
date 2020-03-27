@@ -2,10 +2,9 @@ const { GoogleSpreadsheet } = require('google-spreadsheet');
 const creds = require('./client_secret.json');
 const pino = require('pino');
 
-const logger = pino({ 
-    level: process.env.LOV_LEVEL || 'info',
-    prettyPrint: { colorize: true, translateTime: true },
-});
+
+const logger = require('./logger');
+
 
 class GoogleTable {
     constructor(sheetID) {
@@ -25,4 +24,4 @@ class GoogleTable {
 }
 
 
-module.exports = {GoogleTable};
+module.exports = { GoogleTable };
