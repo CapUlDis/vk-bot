@@ -5,6 +5,7 @@ require('dotenv').config()
 
 
 describe('Tests for spreadsheet functionlities.', function() {
+    
     it('GoogleTable instance returns correct properties.', async () => {
         const test_table = new GoogleTable(process.env.SPREADSHEET_ID);
         await test_table.getDocInfo();
