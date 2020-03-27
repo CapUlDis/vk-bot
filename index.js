@@ -1,11 +1,14 @@
 require('dotenv').config()
 const express = require('express');
+const expressPino = require('express-pino-logger');
 const bodyParser = require('body-parser');
 const VKbot = require('node-vk-bot-api/lib');
 const { GoogleTable } = require('./spreadsheet');
 
 
 const logger = require('./logger');
+const expressLogger = expressPino({ logger });
+
 const app = express();
 const bot = new VKbot({
     token: process.env.VK_TOKEN,

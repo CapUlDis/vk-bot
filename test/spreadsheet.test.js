@@ -1,7 +1,6 @@
 require('dotenv').config()
 const sinon = require('sinon');
 const assert = require('chai').assert;
-const expect = require('chai').expect;
 
 const { GoogleTable } = require('../spreadsheet');
 const logger = require('../logger');
