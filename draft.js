@@ -1,10 +1,11 @@
-// const pino = require('pino');
+const stringTable = require('string-table');
 
-// const logger = pino({ 
-//     level: process.env.LOV_LEVEL || 'info',
-//     prettyPrint: { colorize: true, translateTime: true },
-// });
+var users = [
+    { 'name': 'Dan', 'gender': 'M', 'age': 29 },
+    { 'name': 'Adam', 'gender': 'M', 'age': 31 },
+    { 'name': 'Lauren', 'gender': 'F', 'age': 33 }
+];
 
-const logger = require('./index');
+var table = stringTable.create(users, { capitalizeHeaders: true });
 
-logger.info('testass');
+console.log(table);

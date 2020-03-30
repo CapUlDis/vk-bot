@@ -4,6 +4,7 @@ const expressPino = require('express-pino-logger');
 const bodyParser = require('body-parser');
 const VKbot = require('node-vk-bot-api/lib');
 const { GoogleTable } = require('./spreadsheet');
+const stringTable = require('string-table');
 
 
 const logger = require('./logger');
@@ -35,6 +36,24 @@ bot.command('дежурство', async (ctx) => {
         ctx.reply('Ошибка: нет доступа к гугл таблице!')
     }
 });
+
+bot.command('дежурство2', async (ctx) => {
+    try {
+        await table_duty.getDocInfo();
+        let tableArray = new Array;
+        for (i = 0; i < table_duty.rows.length; i++) {
+            let rowObj = {};
+            for (j = 0; j < table_duty.sheet.headerValues.length; j++) {
+                rowObj[table_duty.sheet.headerValues[j]] = table_duty.rows[i][table_duty.sheet.headerValues[j]]
+            }
+            tableArray.push(rowObj);
+        }
+        let botAnswer = stringTable.create(tableArray);
+        ctx.reply(botAnswer);
+    } catch (error) {
+        ctx.reply('Ошибка: нет доступа к гугл таблице!')
+    }
+})
 
 bot.command('тест1', (ctx) => {
     ctx.reply('Ребята не стоит вскрывать эту тему. Вы молодые, шутливые, вам все легко. Это не то. Это не Чикатило и даже не архивы спецслужб. Сюда лучше не лезть. Серьезно, любой из вас будет жалеть. Лучше закройте тему и забудьте что тут писалось. Я вполне понимаю что данным сообщением вызову дополнительный интерес, но хочу сразу предостеречь пытливых - стоп. Остальные просто не найдут.');
