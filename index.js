@@ -49,6 +49,7 @@ bot.command('дежурство2', async (ctx) => {
             tableArray.push(rowObj);
         }
         let botAnswer = stringTable.create(tableArray);
+        console.log(botAnswer);
         ctx.reply(botAnswer);
     } catch (error) {
         ctx.reply('Ошибка: нет доступа к гугл таблице!')
