@@ -28,7 +28,8 @@
     "node-vk-bot-api": "^3.3.3",
     "package.json": "^2.0.1",
     "pino": "^5.17.0",
-    "pino-pretty": "^3.6.1"
+    "pino-pretty": "^3.6.1",
+    "string-table": "^0.1.5"
   },
   "devDependencies": {
     "chai": "^4.2.0",
