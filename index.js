@@ -34,8 +34,8 @@ bot.command('дежурство', async (ctx) => {
             }
             tableArray.push(rowObj);
         }
-        let botAnswer = stringTable.create(tableArray);
-        botAnswer.replace(/ /g, '&#127;');
+        let tableDutyStr = stringTable.create(tableArray);
+        let botAnswer = tableDutyStr.replace(/ /g, '&#127;');
         console.log(botAnswer);
         ctx.reply(botAnswer);
     } catch (error) {
