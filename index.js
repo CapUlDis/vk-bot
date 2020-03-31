@@ -35,7 +35,7 @@ bot.command('дежурство', async (ctx) => {
             tableArray.push(rowObj);
         }
         let botAnswer = stringTable.create(tableArray);
-        botAnswer.replace(' ', '&#127;');
+        botAnswer.replace(' ', '\u3000');
         console.log(botAnswer);
         ctx.reply(botAnswer);
     } catch (error) {
