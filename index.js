@@ -57,7 +57,7 @@ bot.command('текущие', async (ctx) => {
             for (let i = table_duty.rows.length - 1; i >= 0; i--) {
                 
                 let dateUp = moment(table_duty.rows[i]['Период'], 'DD-MM-YY');
-                let weekBefore = moment(rows[12]['Период'], 'DD-MM-YY').subtract(7, 'days');
+                let weekBefore = moment(table_duty.rows[12]['Период'], 'DD-MM-YY').subtract(7, 'days');
                 
                 if (today <= dateUp && today > weekBefore) {
                     ctx.reply(`В срок до ${dateUp.format('L')} дежурят по кухне - ${table_duty.rows[i]['Кухня']}, по КВТ - ${table_duty.rows[i]['КВТ']}`);
