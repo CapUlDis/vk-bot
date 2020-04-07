@@ -63,7 +63,7 @@ bot.command('текущие', async (ctx) => {
                     ctx.reply(`В срок до ${dateUp.format('L')} дежурят по кухне - ${table_duty.rows[i]['Кухня']}, по КВТ - ${table_duty.rows[i]['КВТ']}`);
                     break;
                 } else if (today > dateUp || i == 0) {
-                    ctx.reply(`На текущий период дежурств не запланировано. Заполните график по ссылке https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}`);
+                    ctx.reply(`На текущий период дежурств не запланировано. Заполните график по ссылке https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}`);
                     break;
                 }
 
@@ -71,7 +71,7 @@ bot.command('текущие', async (ctx) => {
 
         } else {
 
-            ctx.reply(`График дежурств пустой. Заполните график по ссылке https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}`);
+            ctx.reply(`График дежурств пустой. Заполните график по ссылке https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}`);
 
         }
     } catch (error) {
