@@ -42,6 +42,7 @@ bot.command('дежурство', async (ctx) => {
         console.log(botAnswer);
         ctx.reply(botAnswer);
     } catch (error) {
+        console.log(error);
         ctx.reply('Ошибка: нет доступа к гугл таблице!')
     }
 })
@@ -74,6 +75,7 @@ bot.command('текущие', async (ctx) => {
 
         }
     } catch (error) {
+        console.log(error);
         ctx.reply('Ошибка: нет доступа к гугл таблице!')
     }
 })
