@@ -7,6 +7,9 @@ const { GoogleTable } = require('./spreadsheet');
 const stringTable = require('string-table');
 
 
+const moment = require('moment');
+moment.locale('ru');
+
 const logger = require('./logger');
 const expressLogger = expressPino({ logger });
 
@@ -38,6 +41,38 @@ bot.command('дежурство', async (ctx) => {
         ///let botAnswer = tableDutyStr.replace(/ /g, '\u3000');
         console.log(botAnswer);
         ctx.reply(botAnswer);
+    } catch (error) {
+        ctx.reply('Ошибка: нет доступа к гугл таблице!')
+    }
+})
+
+bot.command('текущие', async (ctx) => {
+    try {
+        await table_duty.getDocInfo();
+        if (table_duty.rows[0] != undefined) {
+
+            let today = moment();
+
+            for (let i = table_duty.rows.length - 1; i >= 0; i--) {
+                
+                let dateUp = moment(table_duty.rows[i]['Период'], 'DD-MM-YY');
+                let weekBefore = moment(rows[12]['Период'], 'DD-MM-YY').subtract(7, 'days');
+                
+                if (today <= dateUp && today > weekBefore) {
+                    ctx.reply(`В срок до ${dateUp.format('L')} дежурят по кухне - ${table_duty.rows[i]['Кухня']}, по КВТ - ${table_duty.rows[i]['КВТ']}`);
+                    break;
+                } else if (today > dateUp || i == 0) {
+                    ctx.reply(`На текущий период дежурств не запланировано. Заполните график по ссылке https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}`);
+                    break;
+                }
+
+            }
+
+        } else {
+
+            ctx.reply(`График дежурств пустой. Заполните график по ссылке https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}`);
+
+        }
     } catch (error) {
         ctx.reply('Ошибка: нет доступа к гугл таблице!')
     }

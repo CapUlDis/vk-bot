@@ -25,6 +25,7 @@
     "express": "^4.17.1",
     "express-pino-logger": "^4.0.0",
     "google-spreadsheet": "^3.0.9",
+    "moment": "^2.24.0",
     "node-vk-bot-api": "^3.3.3",
     "package.json": "^2.0.1",
     "pino": "^5.17.0",

@@ -1,3 +1,4 @@
+require('dotenv').config()
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const creds = require('./client_secret.json');
 
@@ -14,7 +15,7 @@ class GoogleTable {
         try {
             await this.doc.useServiceAccountAuth(creds);
             await this.doc.loadInfo();
-            this.sheet = this.doc.sheetsByIndex[0];
+            this.sheet = this.doc.sheetsByIndex[process.env.SHEET_INDEX];
             this.rows = await this.sheet.getRows();
         } catch (error) {
             logger.error(`Can't connect to Google Spreadsheet. Please, check spreadsheet ID: ${error.message}`);
