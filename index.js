@@ -3,6 +3,7 @@ const express = require('express');
 const expressPino = require('express-pino-logger');
 const bodyParser = require('body-parser');
 const VKbot = require('node-vk-bot-api/lib');
+const Markup = require('node-vk-bot-api/lib/markup');
 const { GoogleTable } = require('./spreadsheet');
 const stringTable = require('string-table');
 
@@ -21,12 +22,21 @@ const bot = new VKbot({
 const table_duty = new GoogleTable(process.env.SPREADSHEET_ID);
 
 
+bot.command('/старт', (ctx) => {
+    ctx.reply('Выбери, что показать.', null, Markup
+      .keyboard([
+        'Текущие дежурные',
+        'Весь график',
+      ])
+      .oneTime());
+  });
+
 bot.command('бот?', (ctx) => {
     logger.info('Test logger KTO');
     ctx.reply('КТО?!');
 });
 
-bot.command('дежурство', async (ctx) => {
+bot.command('Весь график', async (ctx) => {
     try {
         await table_duty.getDocInfo();
         let tableArray = new Array;
@@ -38,8 +48,6 @@ bot.command('дежурство', async (ctx) => {
             tableArray.push(rowObj);
         }
         let botAnswer = stringTable.create(tableArray);
-        ///let botAnswer = tableDutyStr.replace(/ /g, '\u3000');
-        console.log(botAnswer);
         ctx.reply(botAnswer);
     } catch (error) {
         logger.error(error);
@@ -47,18 +55,14 @@ bot.command('дежурство', async (ctx) => {
     }
 })
 
-bot.command('текущие', async (ctx) => {
+bot.command('Текущие дежурные', async (ctx) => {
     try {
         await table_duty.getDocInfo();
         if (table_duty.rows[0] != undefined) {
-
             let today = moment();
-
             for (let i = table_duty.rows.length - 1; i >= 0; i--) {
-                
                 let dateUp = moment(table_duty.rows[i]['Период'], 'DD-MM-YY');
                 let weekBefore = moment(table_duty.rows[i]['Период'], 'DD-MM-YY').subtract(7, 'days');
-                
                 if (today <= dateUp && today > weekBefore) {
                     ctx.reply(`В срок до ${dateUp.format('L')} дежурят по кухне - ${table_duty.rows[i]['Кухня']}, по КВТ - ${table_duty.rows[i]['КВТ']}`);
                     break;
@@ -66,13 +70,9 @@ bot.command('текущие', async (ctx) => {
                     ctx.reply(`На текущий период дежурств не запланировано. Заполните график по ссылке https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}`);
                     break;
                 }
-
             }
-
         } else {
-
             ctx.reply(`График дежурств пустой. Заполните график по ссылке https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}`);
-
         }
     } catch (error) {
         logger.error(error);
