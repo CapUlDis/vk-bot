@@ -35,7 +35,7 @@ bot.command('бот?', (ctx) => {
     ctx.reply('КТО?!');
 });
 
-bot.command(/Весь\sграфик/, async (ctx) => {
+bot.command(/Весь\sграфик/u, async (ctx) => {
     try {
         await table_duty.getDocInfo();
         let tableArray = new Array;
@@ -54,7 +54,7 @@ bot.command(/Весь\sграфик/, async (ctx) => {
     }
 })
 
-bot.command(/Текущие\sдежурные/, async (ctx) => {
+bot.command(/Текущие\sдежурные/u, async (ctx) => {
     try {
         await table_duty.getDocInfo();
         if (table_duty.rows[0] != undefined) {
