@@ -35,7 +35,7 @@ bot.command('бот?', (ctx) => {
     ctx.reply('КТО?!');
 });
 
-bot.command(/Весь\sграфик/u, async (ctx) => {
+bot.command(/Весь\sграфик/, async (ctx) => {
     try {
         await table_duty.getDocInfo();
         let tableArray = new Array;
@@ -54,7 +54,7 @@ bot.command(/Весь\sграфик/u, async (ctx) => {
     }
 })
 
-bot.command(/Текущие\sдежурные/u, async (ctx) => {
+bot.command(/Текущие\sдежурные/, async (ctx) => {
     try {
         await table_duty.getDocInfo();
         if (table_duty.rows[0] != undefined) {
@@ -79,7 +79,7 @@ bot.command(/Текущие\sдежурные/u, async (ctx) => {
     }
 })
 
-bot.command(/test\s2/, (ctx) => {
+bot.command(/тест\s2/, (ctx) => {
     ctx.reply('Ребята не стоит вскрывать эту тему. Вы молодые, шутливые, вам все легко. Это не то. Это не Чикатило и даже не архивы спецслужб. Сюда лучше не лезть. Серьезно, любой из вас будет жалеть. Лучше закройте тему и забудьте что тут писалось. Я вполне понимаю что данным сообщением вызову дополнительный интерес, но хочу сразу предостеречь пытливых - стоп. Остальные просто не найдут.');
 });
 
