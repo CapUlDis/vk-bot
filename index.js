@@ -87,13 +87,7 @@ app.use(expressLogger);
 
 app.use(bodyParser.json());
 
-app.post('/', function (req, res) {
-    logger.info(req.body.object.message.text);
-    bot.webhookCallback(req, res)
-    logger.info(res);
-});
-
-//app.post('/', bot.webhookCallback);
+app.post('/', bot.webhookCallback);
 
 app.listen(process.env.PORT || 3000);
 
