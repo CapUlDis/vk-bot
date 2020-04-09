@@ -92,12 +92,8 @@ app.post('/', function (req, res, next) {
     next();
 });
 
-app.post('/', function (req, res, next) {
+app.post('/', function (req, res) {
     bot.webhookCallback;
-    next();
-});
-
-app.post('/', function (res) {
     logger.info(res);
 });
 
