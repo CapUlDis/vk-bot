@@ -19,3 +19,5 @@ heroku logs --tail - логи деплоенного приложения
 &#13;
 &#12;
 &#8195;
+
+req.body.object.message.text
