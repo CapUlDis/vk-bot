@@ -88,7 +88,7 @@ app.use(expressLogger);
 app.use(bodyParser.json());
 
 app.post('/', function (req, res, next) {
-    logger.info(req.body.object);
+    logger.info(req.body.object.message.text);
     next();
 });
 
