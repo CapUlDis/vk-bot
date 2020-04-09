@@ -92,9 +92,10 @@ app.post('/', function (req, res, next) {
     next();
 });
 
-app.post('/', function (req, res) {
-    bot.webhookCallback;
-    logger.info(res);
+app.post('/', bot.webhookCallback(next));
+
+app.post('/', function (res) {
+    logger.info(res.body.object.message.text);
 });
 
 app.listen(process.env.PORT || 3000);
