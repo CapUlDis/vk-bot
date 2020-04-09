@@ -90,7 +90,7 @@ app.use(bodyParser.json());
 app.post('/', function (req, res) {
     logger.info(req.body.object.message.text);
     bot.webhookCallback
-    logger.info(res.body.object.message.text);
+    logger.info(res);
 });
 
 //app.post('/', bot.webhookCallback);
