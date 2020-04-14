@@ -22,6 +22,8 @@ const bot = new VKbot({
 const table_duty = new GoogleTable(process.env.SPREADSHEET_ID);
 
 
+const sayWho = ctx => ctx.reply('КТО?');
+
 bot.command('/старт', (ctx) => {
     ctx.reply('Выбери, что показать.', null, Markup
       .keyboard([
@@ -31,7 +33,7 @@ bot.command('/старт', (ctx) => {
   });
 
 bot.command('бот?', (ctx) => {
-    logger.info('Test logger KTO');
+    //logger.info('Test logger KTO');
     ctx.reply('КТО?!');
 });
 
@@ -52,7 +54,7 @@ bot.command(/Весь\sграфик/i, async (ctx) => {
         logger.error(error);
         ctx.reply('Ошибка: нет доступа к гугл таблице!')
     }
-})
+});
 
 bot.command(/Текущие\sдежурные/i, async (ctx) => {
     try {
@@ -77,11 +79,12 @@ bot.command(/Текущие\sдежурные/i, async (ctx) => {
         logger.error(error);
         ctx.reply('Ошибка: нет доступа к гугл таблице!')
     }
-})
+});
 
 bot.command(/Тест\sтест/i, (ctx) => {
     ctx.reply('Ребята не стоит вскрывать эту тему. Вы молодые, шутливые, вам все легко. Это не то. Это не Чикатило и даже не архивы спецслужб. Сюда лучше не лезть. Серьезно, любой из вас будет жалеть. Лучше закройте тему и забудьте что тут писалось. Я вполне понимаю что данным сообщением вызову дополнительный интерес, но хочу сразу предостеречь пытливых - стоп. Остальные просто не найдут.');
 });
+
 
 app.use(expressLogger);
 
@@ -91,3 +94,4 @@ app.post('/', bot.webhookCallback);
 
 app.listen(process.env.PORT || 3000);
 
+module.exports = {sayWho};
