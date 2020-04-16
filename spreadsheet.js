@@ -11,11 +11,11 @@ class GoogleTable {
         this.doc = new GoogleSpreadsheet(sheetID);
     }
 
-    async getDocInfo() {
+    async getDocSheetRowsInfo(sheetIndex) {
         try {
             await this.doc.useServiceAccountAuth(creds);
             await this.doc.loadInfo();
-            this.sheet = this.doc.sheetsByIndex[process.env.SHEET_INDEX];
+            this.sheet = this.doc.sheetsByIndex[sheetIndex];
             this.rows = await this.sheet.getRows();
         } catch (error) {
             logger.error(`Can't connect to Google Spreadsheet. Please, check spreadsheet ID: ${error.message}`);
