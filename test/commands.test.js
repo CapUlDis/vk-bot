@@ -24,4 +24,15 @@ describe('Test getCurrentDuties command.', () => {
         await tableM3.delRow(1);
         await tableM3.delRow(0);
     });
+
+    it('should say: На текущий период...', async () => {
+        let weekAfter = moment().subtract(7, 'days');
+        await tableM3.getSheetRows();
+        await tableM3.addRow({ Период: weekAfter.format('L'), Кухня: 'Гусь', КВТ: 'Лось' });
+
+        const message = await new Promise(resolve => getCurrentDuties({ reply: resolve }));
+        expect(message).to.include('На текущий период дежурств не запланировано.');
+
+        await tableM3.delRow(0);
+    });
 });
