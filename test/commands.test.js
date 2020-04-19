@@ -47,16 +47,16 @@ describe('Test getCurrentDuties command.', () => {
     it('should say: Ошибка...', async () => {
         let initialEnvVar = process.env.SPREADSHEET_ID;
 
-        // const stub = sinon.stub(logger, 'error');
+        const stub = sinon.stub(logger, 'error');
         process.env.SPREADSHEET_ID = 'foo';
         const { getCurrentDuties } = proxyquire('../commands', {});
 
         const message = await new Promise(resolve => getCurrentDuties({ reply: resolve }));
-        // expect(logger.error.calledOnce).to.be.true;
-        // expect(stub.args[0][0]).includes('TypeError: Cannot read property');
+        expect(logger.error.calledTwice).to.be.true;
+        expect(stub.args[0][0]).includes('Something went wrong with connection or object');
         expect(message).to.include('Ошибка: нет доступа к гугл таблице!');
 
         process.env.SPREADSHEET_ID = initialEnvVar;
-        // stub.restore();
+        stub.restore();
     });
 });
