@@ -5,10 +5,9 @@ const logger = require('./logger');
 const { GoogleTable } = require('./spreadsheet');
 
 
-const tableM3 = new GoogleTable({ sheetID: process.env.SPREADSHEET_ID, sheetIndex: process.env.SHEET_INDEX });
-
 const getCurrentDuties = async ctx => {
     try {
+        const tableM3 = new GoogleTable({ sheetID: process.env.SPREADSHEET_ID, sheetIndex: process.env.SHEET_INDEX });
         await tableM3.getSheetRows(process.env.SHEET_INDEX);
         if (tableM3.rows[0] != undefined) {
             let today = moment();
@@ -32,4 +31,4 @@ const getCurrentDuties = async ctx => {
     }
 }
 
-module.exports = { getCurrentDuties, tableM3 };
+module.exports = { getCurrentDuties };
