@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const VKbot = require('node-vk-bot-api/lib');
 const Markup = require('node-vk-bot-api/lib/markup');
 const { GoogleTable } = require('./spreadsheet');
-const stringTable = require('string-table');
 
 
 const moment = require('moment');
@@ -32,30 +31,6 @@ bot.command('/старт', (ctx) => {
       ]));
   });
 
-bot.command('бот?', (ctx) => {
-    //logger.info('Test logger KTO');
-    ctx.reply('КТО?!');
-});
-
-bot.command(/Весь\sграфик/i, async (ctx) => {
-    try {
-        await table_duty.getDocInfo();
-        let tableArray = new Array;
-        for (i = 0; i < table_duty.rows.length; i++) {
-            let rowObj = {};
-            for (j = 0; j < table_duty.sheet.headerValues.length; j++) {
-                rowObj[table_duty.sheet.headerValues[j]] = table_duty.rows[i][table_duty.sheet.headerValues[j]]
-            }
-            tableArray.push(rowObj);
-        }
-        let botAnswer = stringTable.create(tableArray);
-        ctx.reply(botAnswer);
-    } catch (error) {
-        logger.error(error);
-        ctx.reply('Ошибка: нет доступа к гугл таблице!')
-    }
-});
-
 bot.command(/Текущие\sдежурные/i, async (ctx) => {
     try {
         await table_duty.getDocInfo();
@@ -81,7 +56,7 @@ bot.command(/Текущие\sдежурные/i, async (ctx) => {
     }
 });
 
-bot.command(/Тест\sтест/i, (ctx) => {
+bot.command(/Тест/i, (ctx) => {
     ctx.reply('Ребята не стоит вскрывать эту тему. Вы молодые, шутливые, вам все легко. Это не то. Это не Чикатило и даже не архивы спецслужб. Сюда лучше не лезть. Серьезно, любой из вас будет жалеть. Лучше закройте тему и забудьте что тут писалось. Я вполне понимаю что данным сообщением вызову дополнительный интерес, но хочу сразу предостеречь пытливых - стоп. Остальные просто не найдут.');
 });
 
