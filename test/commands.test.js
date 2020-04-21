@@ -44,7 +44,7 @@ describe('Test getCurrentDuties command.', () => {
         await tableTest.delRow(0);
     });
 
-    it('should say: Ошибка...', async () => {
+    it('should say: Что-то пошло не так...', async () => {
         let initialEnvVar = process.env.SPREADSHEET_ID;
 
         const stub = sinon.stub(logger, 'error');
@@ -54,7 +54,7 @@ describe('Test getCurrentDuties command.', () => {
         const message = await new Promise(resolve => getCurrentDuties({ reply: resolve }));
         expect(logger.error.calledTwice).to.be.true;
         expect(stub.args[0][0]).includes('Something went wrong with connection or object');
-        expect(message).to.include('Ошибка: нет доступа к гугл таблице!');
+        expect(message).to.include('Что-то пошло не так с таблицей.');
 
         process.env.SPREADSHEET_ID = initialEnvVar;
         stub.restore();

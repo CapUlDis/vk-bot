@@ -31,15 +31,16 @@ moment.locale('ru');
 // const tableDuty = new GoogleTable({ sheetID: '1_Wah-_jNWevQMYtXKCv9Zog3isPT2xzxzdkgm-0qLUo', sheetIndex: 1 });
 // (async () => {
 //     await tableDuty.getSheetRows();
-//     // console.log(tableDuty.rowsNum);
+//     console.log(tableDuty.rows[2]._rawData);
+//     console.log(tableDuty.rows.length);
     
-//     let today = moment();
-//     let weekAfter = moment().add(7, 'days');
-//     await tableDuty.addRow({ Период: today.format('L'), Кухня: 'Гусь', КВТ: 'Лось' });
-//     await tableDuty.addRow({ Период: weekAfter.format('L'), Кухня: 'Ёрш', КВТ: 'Краб' });
+    // let today = moment();
+    // let weekAfter = moment().add(7, 'days');
+    // await tableDuty.addRow({ Период: today.format('L'), Кухня: 'Гусь', КВТ: 'Лось' });
+    // await tableDuty.addRow({ Период: weekAfter.format('L'), Кухня: 'Ёрш', КВТ: 'Краб' });
 
-//     await tableDuty.delRow(1);
-//     await tableDuty.delRow(0);
+    // await tableDuty.delRow(1);
+    // await tableDuty.delRow(0);
 // })();
 // const proxyquire = require('proxyquire').noPreserveCache();
 // process.env.SPREADSHEET_ID = 'foo';
@@ -50,12 +51,15 @@ moment.locale('ru');
 //     console.log(tableM3.sheet);
 // })();
 
-const tets = { my: 0, your: 10 };
-console.log(tets.my);
-(async () => {
-    const tets = { my: 5, your: 7};
-    console.log(tets.my);
-})();
+// const tets = { my: 0, your: 10 };
+// console.log(tets.my);
+// (async () => {
+//     const tets = { my: 5, your: 7};
+//     console.log(tets.my);
+// })();
+
+const { fillScheduleByLastDuties } = require('./commands');
+fillScheduleByLastDuties();
 
 
 

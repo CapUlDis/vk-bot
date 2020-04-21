@@ -31,4 +31,42 @@ const getCurrentDuties = async ctx => {
     }
 }
 
-module.exports = { getCurrentDuties };
+const fillScheduleByLastDuties = async ctx => {
+    try {
+        const tableM3 = new GoogleTable({ sheetID: process.env.SPREADSHEET_ID, sheetIndex: process.env.SHEET_INDEX });
+        await tableM3.getSheetRows();
+        if (tableM3.rows[0] == undefined) { return ctx.reply('График пустой, нечем заполнять.') };
+        let dutyList = [];
+        for (let i = tableM3.rows.length - 1; i >= 0 && i >= tableM3.rows.length - 2; i--) {
+            for (let j = 2; j >= 1; j--) {
+                if (!dutyList.includes(tableM3.rows[i]._rawData[j])) {
+                    dutyList.unshift(tableM3.rows[i]._rawData[j]);
+                }
+            }
+        }
+        if (dutyList.length % 2 == 0) {
+            for (let i = 0; i <= dutyList.length - 1; i + 2) {
+                let newDutyDate = moment(tableM3.rows[tableM3.rows.length - 1], 'DD-MM-YY').add(7, 'days');
+                tableM3.addRow({ Период: newDutyDate.format('L'), Кухня: dutyList[i + 1], КВТ: dutyList[i] });
+                tableM3.getSheetRows();
+            }
+        } else {
+            dutyList.push(dutyList[0]);
+            for (let i = 0; i <= dutyList.length - 1; i + 2) {
+                let newDutyDate = moment(tableM3.rows[tableM3.rows.length - 1], 'DD-MM-YY').add(7, 'days');
+                tableM3.addRow({ Период: newDutyDate.format('L'), Кухня: dutyList[i], КВТ: dutyList[i + 1] });
+                tableM3.getSheetRows();
+            }
+        }
+        return ctx.reply('График дежурств заполнен. Выбери, что показать:', null, Markup
+                .keybord([
+                    'Текущие дежурные',
+                    'Тест',
+                ]));
+    } catch (error) {
+        logger.error(error);
+        return ctx.reply('Что-то пошло не так с таблицей. Проверьте, что таблица заполнена правильно.')
+    }
+}
+
+module.exports = { getCurrentDuties, fillScheduleByLastDuties };
