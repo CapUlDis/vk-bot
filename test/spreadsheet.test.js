@@ -8,18 +8,18 @@ const logger = require('../logger');
 
 describe('Tests for class GoogleTable.', function() {
     
-    it('GoogleTable instance returns correct properties by getDocInfo method.', async () => {
-        const test_table = new GoogleTable(process.env.SPREADSHEET_ID);
-        await test_table.getDocInfo();
-        assert.equal(test_table.sheet.title, 'График Дежурств');
+    it('GoogleTable instance returns correct properties by getSheetRows method.', async () => {
+        const testTable = new GoogleTable({ sheetID: process.env.SPREADSHEET_ID, sheetIndex: process.env.SHEET_INDEX });
+        await testTable.getSheetRows();
+        assert.equal(testTable.sheet.title, 'Тест');
     });
 
-    it('getDocInfo method throws error and correct log.', async () => {
+    it('getSheetRows method throws error and correct log.', async () => {
         const stub = sinon.stub(logger, 'error');
-        const test_table = new GoogleTable('foo');
-        await test_table.getDocInfo();
+        const testTable = new GoogleTable({ sheetID: 'foo', sheetIndex: 'bar' });
+        await testTable.getSheetRows();
         assert.isTrue(logger.error.calledOnce);
-        assert.isTrue(stub.args[0][0].includes("Can't connect to Google Spreadsheet."));
+        assert.isTrue(stub.args[0][0].includes("Something went wrong with connection or object"));
         stub.restore();
     });
 });
