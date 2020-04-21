@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const VkBot = require('node-vk-bot-api/lib');
 const Markup = require('node-vk-bot-api/lib/markup');
 const { getCurrentDuties } = require('./commands');
+const { fillScheduleByLastDuties } = require('./commands');
 
 
 const logger = require('./logger');
@@ -25,6 +26,8 @@ bot.command('/старт', (ctx) => {
   });
 
 bot.command(/Текущие\sдежурные/i, getCurrentDuties);
+
+bot.command(/Заполнить график/i, fillScheduleByLastDuties);
 
 bot.command(/Тест/i, (ctx) => {
     ctx.reply('Ребята не стоит вскрывать эту тему. Вы молодые, шутливые, вам все легко. Это не то. Это не Чикатило и даже не архивы спецслужб. Сюда лучше не лезть. Серьезно, любой из вас будет жалеть. Лучше закройте тему и забудьте что тут писалось. Я вполне понимаю что данным сообщением вызову дополнительный интерес, но хочу сразу предостеречь пытливых - стоп. Остальные просто не найдут.');
