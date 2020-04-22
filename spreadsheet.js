@@ -23,7 +23,7 @@ class GoogleTable {
         }
     }
 
-    async addRow({ Период, Кухня, КВТ }) {
+    async addOneRow({ Период, Кухня, КВТ }) {
         try {
             await this.sheet.addRow({ Период, Кухня, КВТ });
         } catch (error) {
