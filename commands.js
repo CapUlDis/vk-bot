@@ -37,7 +37,7 @@ const fillScheduleByLastDuties = async ctx => {
         await tableM3.getSheetRows();
         if (tableM3.rows[0] == undefined) { return ctx.reply('График пустой, нечем заполнять.') };
         let dutyList = [];
-        for (let i = tableM3.rows.length - 1; i >= 0 && i >= tableM3.rows.length - 2; i--) {
+        for (let i = tableM3.rows.length - 1; i >= 0 && i >= tableM3.rows.length - 3; i--) {
             for (let j = 2; j >= 1; j--) {
                 if (!dutyList.includes(tableM3.rows[i]._rawData[j])) {
                     dutyList.unshift(tableM3.rows[i]._rawData[j]);
