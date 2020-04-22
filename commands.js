@@ -26,7 +26,7 @@ const getCurrentDuties = async ctx => {
         }
     } catch (error) {
         logger.error(error);
-        ctx.reply('Ошибка: нет доступа к гугл таблице!')
+        ctx.reply('Что-то пошло не так с таблицей. Проверьте, что таблица заполнена правильно.')
     }
 }
 
