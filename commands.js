@@ -37,8 +37,8 @@ const fillScheduleByLastDuties = async ctx => {
         await tableM3.getSheetRows();
         if (tableM3.rows[0] == undefined) { return ctx.reply('График пустой, нечем заполнять.') };
         let today = moment();
-        let lastDateInScheduleMinusWeek = moment(tableM3.rows[tableM3.rows.length - 1]['Период'], 'DD-MM-YY').subtract(14, 'days');
-        if (today < lastDateInScheduleMinusWeek) { return ctx.reply(`Дежурство составлено как минимум на две недели вперёд. 
+        let lastDateInScheduleMinus2weeks = moment(tableM3.rows[tableM3.rows.length - 1]['Период'], 'DD-MM-YY').subtract(14, 'days');
+        if (today < lastDateInScheduleMinus2weeks) { return ctx.reply(`Дежурство составлено как минимум на две недели вперёд. 
                                                                      Не торопитесь планировать так далеко в этом изменчивом мире.
                                                                      График: https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}`) };
         let dutyList = [];
@@ -49,16 +49,25 @@ const fillScheduleByLastDuties = async ctx => {
                 }
             }
         }
+        let lastDateInSchedule = moment(tableM3.rows[tableM3.rows.length - 1]['Период'], 'DD-MM-YY');
+        let newDutyDate = null;
+        if (today > lastDateInSchedule) {
+            if (today.weekday() >= lastDateInSchedule.weekday()) {
+                newDutyDate = moment().add(7, 'days').weekday(lastDateInSchedule.weekday());
+            } else {
+                newDutyDate = moment().weekday(lastDateInSchedule.weekday());
+            }
+        } else {
+            newDutyDate = lastDateInSchedule.add(7, 'days');
+        }
         if (dutyList.length % 2 == 0) {
             for (let i = 0; i <= dutyList.length - 1; i = i + 2) {
-                let newDutyDate = moment(tableM3.rows[tableM3.rows.length - 1]['Период'], 'DD-MM-YY').add(7, 'days');
                 await tableM3.addRow({ Период: newDutyDate.format('L'), Кухня: dutyList[i + 1], КВТ: dutyList[i] });
                 await tableM3.getSheetRows();
             }
         } else {
             dutyList.push(dutyList[0]);
             for (let i = 0; i <= dutyList.length - 1; i = i + 2) {
-                let newDutyDate = moment(tableM3.rows[tableM3.rows.length - 1]['Период'], 'DD-MM-YY').add(7, 'days');
                 await tableM3.addRow({ Период: newDutyDate.format('L'), Кухня: dutyList[i], КВТ: dutyList[i + 1] });
                 await tableM3.getSheetRows();
             }
