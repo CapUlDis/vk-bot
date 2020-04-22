@@ -57,9 +57,3 @@ moment.locale('ru');
 //     const tets = { my: 5, your: 7};
 //     console.log(tets.my);
 // })();
-
-const { fillScheduleByLastDuties } = require('./commands');
-fillScheduleByLastDuties();
-
-
-
