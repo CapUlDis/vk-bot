@@ -47,6 +47,7 @@ const fillScheduleByLastDuties = async ctx => {
         logger.info(dutyList);
         if (dutyList.length % 2 == 0) {
             for (let i = 0; i <= dutyList.length - 1; i + 2) {
+                logger.info(dutyList.length);
                 let newDutyDate = moment(tableM3.rows[tableM3.rows.length - 1]['Период'], 'DD-MM-YY').add(7, 'days');
                 logger.info(newDutyDate.format('L'));
                 // tableM3.addOneRow({ Период: newDutyDate.format('L'), Кухня: dutyList[i + 1], КВТ: dutyList[i] });
