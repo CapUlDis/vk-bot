@@ -50,15 +50,15 @@ const fillScheduleByLastDuties = async ctx => {
                 await tableM3.addOneRow({ Период: newDutyDate.format('L'), Кухня: dutyList[i + 1], КВТ: dutyList[i] });
                 await tableM3.getSheetRows();
             }
-        } //else {
-        //     dutyList.push(dutyList[0]);
-        //     for (let i = 0; i <= dutyList.length - 1; i = i + 2) {
-        //         let newDutyDate = moment(tableM3.rows[tableM3.rows.length - 1]['Период'], 'DD-MM-YY').add(7, 'days');
-        //         tableM3.addRow({ Период: newDutyDate.format('L'), Кухня: dutyList[i], КВТ: dutyList[i + 1] });
-        //         tableM3.getSheetRows();
-        //     }
-        // }
-        // return ctx.reply('График дежурств заполнен.');
+        } else {
+            dutyList.push(dutyList[0]);
+            for (let i = 0; i <= dutyList.length - 1; i = i + 2) {
+                let newDutyDate = moment(tableM3.rows[tableM3.rows.length - 1]['Период'], 'DD-MM-YY').add(7, 'days');
+                await tableM3.addRow({ Период: newDutyDate.format('L'), Кухня: dutyList[i], КВТ: dutyList[i + 1] });
+                await tableM3.getSheetRows();
+            }
+        }
+        return ctx.reply('График дежурств заполнен.');
     } catch (error) {
         logger.error(error);
         return ctx.reply('Что-то пошло не так с таблицей. Проверьте, что таблица заполнена правильно.')
