@@ -41,14 +41,6 @@ const fillScheduleByLastDuties = async ctx => {
         if (today < lastDateInScheduleMinus2weeks) { return ctx.reply(`Дежурство составлено как минимум на две недели вперёд. 
                                                                      Не торопитесь планировать так далеко в этом изменчивом мире.
                                                                      График: https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}`) };
-        let dutyList = [];
-        for (let i = tableM3.rows.length - 1; i >= 0 && i >= tableM3.rows.length - 3; i--) {
-            for (let j = 2; j >= 1; j--) {
-                if (!dutyList.includes(tableM3.rows[i]._rawData[j])) {
-                    dutyList.unshift(tableM3.rows[i]._rawData[j]);
-                }
-            }
-        }
         let lastDateInSchedule = moment(tableM3.rows[tableM3.rows.length - 1]['Период'], 'DD-MM-YY');
         let newDutyDate = null;
         if (today > lastDateInSchedule) {
@@ -59,6 +51,14 @@ const fillScheduleByLastDuties = async ctx => {
             }
         } else {
             newDutyDate = lastDateInSchedule.add(7, 'days');
+        }
+        let dutyList = [];
+        for (let i = tableM3.rows.length - 1; i >= 0 && i >= tableM3.rows.length - 3; i--) {
+            for (let j = 2; j >= 1; j--) {
+                if (!dutyList.includes(tableM3.rows[i]._rawData[j])) {
+                    dutyList.unshift(tableM3.rows[i]._rawData[j]);
+                }
+            }
         }
         if (dutyList.length % 2 == 0) {
             for (let i = 0; i <= dutyList.length - 1; i = i + 2) {
