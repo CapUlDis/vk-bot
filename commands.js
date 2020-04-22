@@ -36,6 +36,11 @@ const fillScheduleByLastDuties = async ctx => {
         const tableM3 = new GoogleTable({ sheetID: process.env.SPREADSHEET_ID, sheetIndex: process.env.SHEET_INDEX });
         await tableM3.getSheetRows();
         if (tableM3.rows[0] == undefined) { return ctx.reply('График пустой, нечем заполнять.') };
+        let today = moment();
+        let lastDateInScheduleMinusWeek = moment(tableM3.rows[tableM3.rows.length - 1]['Период'], 'DD-MM-YY').subtract(14, 'days');
+        if (today < lastDateInScheduleMinusWeek) { return ctx.reply(`Дежурство составлено как минимум на две недели вперёд. 
+                                                                     Не торопитесь планировать так далеко в этом изменчивом мире.
+                                                                     График: https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}`) };
         let dutyList = [];
         for (let i = tableM3.rows.length - 1; i >= 0 && i >= tableM3.rows.length - 3; i--) {
             for (let j = 2; j >= 1; j--) {
