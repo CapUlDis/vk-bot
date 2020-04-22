@@ -26,7 +26,7 @@ const getCurrentDuties = async ctx => {
         }
     } catch (error) {
         logger.error(error);
-        ctx.reply('Что-то пошло не так с таблицей. Проверьте, что таблица заполнена правильно.')
+        ctx.reply('Что-то пошло не так с таблицей. Проверьте, что таблица заполнена правильно.');
     }
 }
 
@@ -76,7 +76,7 @@ const fillScheduleByLastDuties = async ctx => {
         return ctx.reply('График дежурств заполнен.');
     } catch (error) {
         logger.error(error);
-        return ctx.reply('Что-то пошло не так с таблицей. Проверьте, что таблица заполнена правильно.')
+        return ctx.reply('Что-то пошло не так с таблицей. Проверьте, что таблица заполнена правильно.');
     }
 }
 
