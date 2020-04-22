@@ -53,6 +53,7 @@ const fillScheduleByLastDuties = async ctx => {
                 // tableM3.addOneRow({ Период: newDutyDate.format('L'), Кухня: dutyList[i + 1], КВТ: dutyList[i] });
                 // tableM3.sheet.getRows();
             }
+            return;
         } //else {
         //     dutyList.push(dutyList[0]);
         //     for (let i = 0; i <= dutyList.length - 1; i + 2) {
