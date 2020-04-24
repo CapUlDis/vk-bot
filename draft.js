@@ -32,7 +32,7 @@ const tableDuty = new GoogleTable({ sheetID: '1_Wah-_jNWevQMYtXKCv9Zog3isPT2xzxz
 (async () => {
     await tableDuty.getSheetRows();
     // console.log(tableDuty.rows[2]._rawData);
-    console.log(tableDuty.rows);
+    console.log(tableDuty.sheet.headerValues[1]);
     
     // let today = moment();
     // let weekAfter = moment().add(7, 'days');
