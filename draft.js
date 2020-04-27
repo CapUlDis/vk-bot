@@ -31,8 +31,11 @@ moment.locale('ru');
 const tableDuty = new GoogleTable({ sheetID: '1_Wah-_jNWevQMYtXKCv9Zog3isPT2xzxzdkgm-0qLUo', sheetIndex: 1 });
 (async () => {
     await tableDuty.getSheetRows();
-    // console.log(tableDuty.rows[2]._rawData);
-    console.log(tableDuty.sheet.headerValues[1]);
+    // await tableDuty.addRow({ Период: '20.04.2020', Кухня: 'Гусь', КВТ: 'Лось' });
+    await tableDuty.sheet.setHeaderRow(['Период', 'Кухня', 'КВТ']);
+    // await tableDuty.sheet.clear();
+    // console.log(tableDuty.rows);
+    // await tableDuty.rows.del();
     
     // let today = moment();
     // let weekAfter = moment().add(7, 'days');

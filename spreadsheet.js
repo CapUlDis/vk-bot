@@ -26,6 +26,7 @@ class GoogleTable {
     async addRow({ Период, Кухня, КВТ }) {
         try {
             await this.sheet.addRow({ Период, Кухня, КВТ });
+            this.rows = await this.sheet.getRows();
         } catch (error) {
             logger.error(`Something went wrong with connection or object: ${error.message}`);
         }
@@ -35,6 +36,7 @@ class GoogleTable {
         try {
             this.rows = await this.sheet.getRows();
             await this.rows[rowIndex].delete();
+            this.rows = await this.sheet.getRows();
         } catch (error) {
             logger.error(`Something went wrong with connection or object: ${error.message}`);
         }

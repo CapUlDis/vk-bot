@@ -62,14 +62,12 @@ const fillScheduleByLastDuties = async ctx => {
         if (dutyList.length % 2 == 0) {
             for (let i = 0; i <= dutyList.length - 1; i = i + 2) {
                 await tableM3.addRow({ Период: newDutyDate.format('L'), Кухня: dutyList[i + 1], КВТ: dutyList[i] });
-                await tableM3.getSheetRows();
                 newDutyDate.add(7, 'days');
             }
         } else {
             dutyList.push(dutyList[0]);
             for (let i = 0; i <= dutyList.length - 1; i = i + 2) {
                 await tableM3.addRow({ Период: newDutyDate.format('L'), Кухня: dutyList[i], КВТ: dutyList[i + 1] });
-                await tableM3.getSheetRows();
                 newDutyDate.add(7, 'days');
             }
         }
