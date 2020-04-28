@@ -44,10 +44,10 @@ bot.command(/Дежурства/i, ctx => {
         Markup.button({
           action: {
             type: 'open_link',
-            link: 'https://google.com',
+            link: `https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}`,
             label: 'Открыть гугл-таблицу',
             payload: JSON.stringify({
-              url: 'https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}',
+              url: `https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}`,
             }),
           },
           color: 'default',
@@ -58,7 +58,7 @@ bot.command(/Дежурства/i, ctx => {
         Markup.button('Чек-лист КВТ')
       ]
     ])
-    .oneTime()
+    // .oneTime()
   );
 });
 
