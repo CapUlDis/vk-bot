@@ -41,17 +41,17 @@ bot.command(/Дежурства/i, ctx => {
       ],
       [
         Markup.button('Автозаполнение графика'),
-        // Markup.button({
-        //   action: {
-        //     type: 'open_link',
-        //     link: `https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}`,
-        //     label: 'Открыть гугл-таблицу',
-        //     payload: JSON.stringify({
-        //       url: `https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}`,
-        //     }),
-        //   },
-        //   color: 'default',
-        // })
+        Markup.button({
+          action: {
+            type: 'open_link',
+            link: `https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}`,
+            label: 'Открыть гугл-таблицу',
+            payload: JSON.stringify({
+              url: `https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}`,
+            }),
+          },
+          color: 'default',
+        }),
       ],
       [
         Markup.button('Чек-лист кухни'),
