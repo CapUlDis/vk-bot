@@ -40,13 +40,25 @@ bot.command(/Дежурства/i, ctx => {
         Markup.button('Изменить текущих', 'negative')
       ],
       [
-        Markup.button('Автозаполнение графика')
+        Markup.button('Автозаполнение графика'),
+        Markup.button({
+          action: {
+            type: 'open_link',
+            link: 'https://google.com',
+            label: 'Открыть гугл-таблицу',
+            payload: JSON.stringify({
+              url: 'https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}',
+            }),
+          },
+          color: 'default',
+        })
       ],
       [
         Markup.button('Чек-лист кухни'),
         Markup.button('Чек-лист КВТ')
       ]
     ])
+    .oneTime()
   );
 });
 
