@@ -41,6 +41,8 @@ bot.command(/Дежурства/i, ctx => {
       ],
       [
         Markup.button('Автозаполнение графика'),
+      ],
+      [
         Markup.button({
           action: {
             type: 'open_link',
@@ -58,7 +60,6 @@ bot.command(/Дежурства/i, ctx => {
         Markup.button('Чек-лист КВТ')
       ]
     ])
-    .oneTime()
   );
 });
 
