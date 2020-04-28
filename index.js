@@ -18,13 +18,21 @@ const bot = new VkBot({
 });
 
 bot.command('/старт', (ctx) => {
-    ctx.reply('Выбери, что показать.', null, Markup
+    ctx.reply('Выбери раздел.', null, Markup
       .keyboard([
-        'Текущие дежурные',
-        'Заполнить график',
-        'Тест',
-      ]));
-  });
+        [
+          Markup.button('Дежурства', 'primary'),
+          Markup.button('Раздельный', 'primary')
+        ],
+        [
+          Markup.button('Банк', 'primary'),
+          Markup.button('Предложения', 'primary')
+        ]
+      ])
+    );
+});
+
+
 
 bot.command(/Текущие\sдежурные/i, getCurrentDuties);
 
