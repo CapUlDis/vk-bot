@@ -63,7 +63,7 @@ bot.command(/Дежурства/i, ctx => {
       ])
     );
   } catch (error) {
-   logger.error(error);
+      logger.error(error);
   }
 });
 
