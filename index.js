@@ -35,33 +35,33 @@ bot.command('/старт', ctx => {
 bot.command(/Дежурства/i, ctx => {
   try {
     ctx.reply('Выбери действие:', null, Markup
-    .keyboard([
-      [
-        Markup.button('Показать текущих', 'positive'),
-        Markup.button('Изменить текущих', 'negative')
-      ],
-      [
-        Markup.button('Автозаполнение графика'),
-      ],
-      [
-        Markup.button({
-          action: {
-            type: 'open_link',
-            link: `https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}`,
-            label: 'Открыть гугл-таблицу',
-            payload: JSON.stringify({
-              url: `https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}`,
-            }),
-          },
-          color: 'default',
-        }),
-      ],
-      [
-        Markup.button('Чек-лист кухни'),
-        Markup.button('Чек-лист КВТ')
-      ]
-    ])
-  );
+      .keyboard([
+        [
+          Markup.button('Показать текущих', 'positive'),
+          Markup.button('Изменить текущих', 'negative')
+        ],
+        [
+          Markup.button('Автозаполнение графика'),
+        ],
+        [
+          Markup.button({
+            action: {
+              type: 'open_link',
+              link: `https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}`,
+              label: 'Открыть гугл-таблицу',
+              payload: JSON.stringify({
+                url: `https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}`,
+              }),
+            },
+            color: 'default',
+          }),
+        ],
+        [
+          Markup.button('Чек-лист кухни'),
+          Markup.button('Чек-лист КВТ')
+        ]
+      ])
+    );
   } catch (error) {
     logger.error(error);
   }
