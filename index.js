@@ -33,7 +33,8 @@ bot.command('/старт', ctx => {
 });
 
 bot.command(/Дежурства/i, ctx => {
-  ctx.reply('Выбери действие:', null, Markup
+  try {
+    ctx.reply('Выбери действие:', null, Markup
     .keyboard([
       [
         Markup.button('Показать текущих', 'positive'),
@@ -42,25 +43,28 @@ bot.command(/Дежурства/i, ctx => {
       [
         Markup.button('Автозаполнение графика'),
       ],
-      // [
-      //   Markup.button({
-      //     action: {
-      //       type: 'open_link',
-      //       link: `https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}`,
-      //       label: 'Открыть гугл-таблицу',
-      //       payload: JSON.stringify({
-      //         url: `https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}`,
-      //       }),
-      //     },
-      //     color: 'default',
-      //   }),
-      // ],
+      [
+        Markup.button({
+          action: {
+            type: 'open_link',
+            link: `https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}`,
+            label: 'Открыть гугл-таблицу',
+            payload: JSON.stringify({
+              url: `https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}`,
+            }),
+          },
+          color: 'default',
+        }),
+      ],
       [
         Markup.button('Чек-лист кухни'),
         Markup.button('Чек-лист КВТ')
       ]
     ])
   );
+  } catch (error) {
+    logger.error(error);
+  }
 });
 
 bot.command(/Показать\sтекущих/i, getCurrentDuties);
