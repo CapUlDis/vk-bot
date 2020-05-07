@@ -48,9 +48,9 @@ bot.command(/Дежурства/i, ctx => {
             type: 'open_link',
             link: `https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}`,
             label: 'Открыть гугл-таблицу',
-            payload: JSON.stringify({
-              url: `https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}`,
-            }),
+            // payload: JSON.stringify({
+            //   url: `https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}`,
+            // }),
           },
           color: 'default',
         }),
