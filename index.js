@@ -93,7 +93,7 @@ app.use(bodyParser.json());
 
 app.post('/', function (req, res) {
   logger.info(req.body);
-  bot.webhookCallback
+  bot.webhookCallback(req,res);
   logger.info(res.body);
 });
 
