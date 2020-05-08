@@ -36,13 +36,13 @@ bot.command(/Дежурства/i, ctx => {
   try {
     ctx.reply('Выбери действие:', null, Markup
       .keyboard([
-        [
-          Markup.button('Показать текущих', 'positive'),
-          Markup.button('Изменить текущих', 'negative')
-        ],
-        [
-          Markup.button('Автозаполнение графика'),
-        ],
+        // [
+        //   Markup.button('Показать текущих', 'positive'),
+        //   Markup.button('Изменить текущих', 'negative')
+        // ],
+        // [
+        //   Markup.button('Автозаполнение графика'),
+        // ],
         Markup.button({
           action: {
             type: 'open_link',
@@ -53,11 +53,11 @@ bot.command(/Дежурства/i, ctx => {
             }),
           },
           color: 'default',
-        }),
-        [
-          Markup.button('Чек-лист кухни'),
-          Markup.button('Чек-лист КВТ')
-        ]
+        })
+        // [
+        //   Markup.button('Чек-лист кухни'),
+        //   Markup.button('Чек-лист КВТ')
+        // ]
       ])
     );
   } catch (error) {
