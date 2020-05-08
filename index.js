@@ -89,12 +89,12 @@ app.use(expressLogger);
 
 app.use(bodyParser.json());
 
-app.post('/', bot.webhookCallback);
+// app.post('/', bot.webhookCallback);
 
 app.post('/', function (req, res) {
   logger.info(req.body);
-  // bot.webhookCallback(req, res);
-  logger.info(res.body);
+  bot.webhookCallback(req, res);
+  logger.info(res);
 });
 
 app.listen(process.env.PORT || 3000);
