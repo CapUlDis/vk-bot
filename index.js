@@ -71,7 +71,6 @@ bot.command(/Дежурства/i, ctx => {
         // ]
       ])
     );
-    logger.info(res);
   } catch (error) {
     logger.error(error);
   }
@@ -90,6 +89,12 @@ app.use(expressLogger);
 
 app.use(bodyParser.json());
 
-app.post('/', bot.webhookCallback);
+// app.post('/', bot.webhookCallback);
+
+app.post('/', function (req, res) {
+  logger.info(req.body);
+  bot.webhookCallback
+  logger.info(res.body);
+});
 
 app.listen(process.env.PORT || 3000);
