@@ -89,11 +89,11 @@ app.use(expressLogger);
 
 app.use(bodyParser.json());
 
-// app.post('/', bot.webhookCallback);
+app.post('/', bot.webhookCallback);
 
 app.post('/', function (req, res) {
   logger.info(req.body);
-  bot.webhookCallback(req, res);
+  // bot.webhookCallback(req, res);
   logger.info(res.body);
 });
 
