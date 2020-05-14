@@ -18,7 +18,7 @@ const bot = new VkBot({
 });
 
 
-bot.command('/старт', ctx => {
+bot.command(/Меню+$/i, ctx => {
     ctx.reply('Выбери раздел:', null, Markup
       .keyboard([
         [
@@ -33,7 +33,7 @@ bot.command('/старт', ctx => {
     );
 });
 
-bot.command(/Дежурства/i, ctx => {
+bot.command(/Дежурства+$/i, ctx => {
   try {
     ctx.reply('Выбери действие:', null, Markup
       .keyboard([
@@ -43,8 +43,6 @@ bot.command(/Дежурства/i, ctx => {
         ],
         [
           Markup.button('Автозаполнение графика'),
-        ],
-        [
           Markup.button({
             action: {
               type: 'open_link',
@@ -56,7 +54,8 @@ bot.command(/Дежурства/i, ctx => {
         ],
         [
           Markup.button('Чек-лист кухни'),
-          Markup.button('Чек-лист КВТ')
+          Markup.button('Чек-лист КВТ'),
+          Markup.button('Меню', 'primary'),
         ]
       ])
     );
@@ -65,11 +64,11 @@ bot.command(/Дежурства/i, ctx => {
   }
 });
 
-bot.command(/Показать\sтекущих/i, getCurrentDuties);
+bot.command(/Показать\sтекущих+$/i, getCurrentDuties);
 
-bot.command(/Автозаполнение\sграфика/i, fillScheduleByLastDuties);
+bot.command(/Автозаполнение\sграфика+$/i, fillScheduleByLastDuties);
 
-bot.command(/Тест/i, (ctx) => {
+bot.command(/Тест+$/i, (ctx) => {
     ctx.reply('Ребята не стоит вскрывать эту тему. Вы молодые, шутливые, вам все легко. Это не то. Это не Чикатило и даже не архивы спецслужб. Сюда лучше не лезть. Серьезно, любой из вас будет жалеть. Лучше закройте тему и забудьте что тут писалось. Я вполне понимаю что данным сообщением вызову дополнительный интерес, но хочу сразу предостеречь пытливых - стоп. Остальные просто не найдут.');
 });
 
