@@ -17,6 +17,7 @@ const bot = new VkBot({
     confirmation: process.env.VK_CONFIRM
 });
 
+
 bot.command('/старт', ctx => {
     ctx.reply('Выбери раздел:', null, Markup
       .keyboard([
@@ -36,39 +37,27 @@ bot.command(/Дежурства/i, ctx => {
   try {
     ctx.reply('Выбери действие:', null, Markup
       .keyboard([
-        Markup.button({
-          action: {
-            type: 'open_link',
-            link: 'https://google.com',
-            label: 'Open Google',
-            payload: JSON.stringify({
-              url: 'https://google.com',
-            }),
-          },
-          color: 'default',
-        }),
-        // [
-        //   Markup.button('Показать текущих', 'positive'),
-        //   Markup.button('Изменить текущих', 'negative')
-        // ],
-        // [
-        //   Markup.button('Автозаполнение графика'),
-        // ],
-        // Markup.button({
-        //   action: {
-        //     type: 'open_link',
-        //     link: `https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}`,
-        //     label: 'Открыть гугл-таблицу',
-        //     payload: JSON.stringify({
-        //       url: `https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}`,
-        //     }),
-        //   },
-        //   color: 'default',
-        // })
-        // [
-        //   Markup.button('Чек-лист кухни'),
-        //   Markup.button('Чек-лист КВТ')
-        // ]
+        [
+          Markup.button('Показать текущих', 'positive'),
+          Markup.button('Изменить текущих', 'negative')
+        ],
+        [
+          Markup.button('Автозаполнение графика'),
+        ],
+        [
+          Markup.button({
+            action: {
+              type: 'open_link',
+              link: `https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}`,
+              label: 'Открыть гугл-таблицу',
+              payload: JSON.stringify({ url: `https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}` })
+            }
+          }),
+        ],
+        [
+          Markup.button('Чек-лист кухни'),
+          Markup.button('Чек-лист КВТ')
+        ]
       ])
     );
   } catch (error) {
@@ -89,12 +78,6 @@ app.use(expressLogger);
 
 app.use(bodyParser.json());
 
-// app.post('/', bot.webhookCallback);
-
-app.post('/', function (req, res) {
-  logger.info(req.body);
-  bot.webhookCallback();
-  logger.info(res);
-});
+app.post('/', bot.webhookCallback);
 
 app.listen(process.env.PORT || 3000);

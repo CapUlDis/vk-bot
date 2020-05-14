@@ -1,24 +1,25 @@
 require('dotenv').config()
-const { GoogleSpreadsheet } = require('google-spreadsheet');
-const { GoogleTable } = require('./spreadsheet');
-const creds = require('./client_secret.json');
+// const { GoogleSpreadsheet } = require('google-spreadsheet');
+// const { GoogleTable } = require('./spreadsheet');
+// const creds = require('./client_secret.json');
 
-const moment = require('moment');
-moment.locale('ru');
+// const moment = require('moment');
+// moment.locale('ru');
 
-moment.updateLocale('ru', {
-    longDateFormat : {
-        LTS: 'H:mm:ss',
-        LT: 'H:mm',
-        L: 'DD.MM.YYYY',
-        LL: 'dd, DD.MM.YY',
-        LLL: 'D MMMM YYYY г., H:mm',
-        LLLL: 'dddd, D MMMM YYYY г., H:mm'
-    }
-});
+// moment.updateLocale('ru', {
+//     longDateFormat : {
+//         LTS: 'H:mm:ss',
+//         LT: 'H:mm',
+//         L: 'DD.MM.YYYY',
+//         LL: 'dd, DD.MM.YY',
+//         LLL: 'D MMMM YYYY г., H:mm',
+//         LLLL: 'dddd, D MMMM YYYY г., H:mm'
+//     }
+// });
 
-let testDate = moment();
-console.log(testDate.format('LL'));
+
+// let testDate = moment();
+// console.log(testDate.format('LL'));
 
 
 // const doc = new GoogleSpreadsheet('1_Wah-_jNWevQMYtXKCv9Zog3isPT2xzxzdkgm-0qLUo');
