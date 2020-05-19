@@ -3,6 +3,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const VkBot = require('node-vk-bot-api/lib');
 const Markup = require('node-vk-bot-api/lib/markup');
+const Scene = require('node-vk-bot-api/lib/scene');
+const Session = require('node-vk-bot-api/lib/session');
+const Stage = require('node-vk-bot-api/lib/stage');
 const { getCurrentDuties } = require('./commands');
 const { fillScheduleByLastDuties } = require('./commands');
 
@@ -70,6 +73,31 @@ bot.command(/Автозаполнение\sграфика+$/i, fillScheduleByLas
 
 bot.command(/Тест+$/i, (ctx) => {
     ctx.reply('Ребята не стоит вскрывать эту тему. Вы молодые, шутливые, вам все легко. Это не то. Это не Чикатило и даже не архивы спецслужб. Сюда лучше не лезть. Серьезно, любой из вас будет жалеть. Лучше закройте тему и забудьте что тут писалось. Я вполне понимаю что данным сообщением вызову дополнительный интерес, но хочу сразу предостеречь пытливых - стоп. Остальные просто не найдут.');
+});
+
+const scene = new Scene('changeDuties',
+  (ctx) => {
+    ctx.scene.next();
+    ctx.reply(`Введите имена дежурных по Кухне и КВТ через пробел. Например: "Саша Маша". Подразумевается, что Саша дежурит по Кухне, а Маша по КВТ.`);
+  },
+  (ctx) => {
+    ctx.session.newDuties = ctx.message.text.split(' ');
+    if (ctx.session.newDuties.length != 2) {
+      ctx.reply(`Слов через пробел больше или меньше двух.`);
+      ctx.scene.enter('changeDuties', [1]);
+    }
+    ctx.reply(`Успех!`)
+    ctx.scene.leave();
+  }
+);
+const session = new Session();
+const stage = new Stage(scene);
+
+bot.use(session.middleware());
+bot.use(stage.middleware());
+
+bot.command(/Изменить текущих+$/i, (ctx) => {
+  ctx.scene.enter('changeDuties');
 });
 
 
