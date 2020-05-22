@@ -8,6 +8,7 @@ const Session = require('node-vk-bot-api/lib/session');
 const Stage = require('node-vk-bot-api/lib/stage');
 const { getCurrentDuties } = require('./commands');
 const { fillScheduleByLastDuties } = require('./commands');
+const { changeDuties } = require('./scenes');
 
 
 const logger = require('./logger');
@@ -19,7 +20,12 @@ const bot = new VkBot({
     token: process.env.VK_TOKEN,
     confirmation: process.env.VK_CONFIRM
 });
+const session = new Session();
+const stage = new Stage(changeDuties);
 
+bot.use(session.middleware());
+
+bot.use(stage.middleware());
 
 bot.command(/Меню+$/i, ctx => {
     ctx.reply('Выбери раздел:', null, Markup
@@ -75,57 +81,8 @@ bot.command(/Тест+$/i, (ctx) => {
     ctx.reply('Ребята не стоит вскрывать эту тему. Вы молодые, шутливые, вам все легко. Это не то. Это не Чикатило и даже не архивы спецслужб. Сюда лучше не лезть. Серьезно, любой из вас будет жалеть. Лучше закройте тему и забудьте что тут писалось. Я вполне понимаю что данным сообщением вызову дополнительный интерес, но хочу сразу предостеречь пытливых - стоп. Остальные просто не найдут.');
 });
 
-const scene = new Scene('changeDuties',
-  ctx => {
-    // logger.info(ctx.scene.step);
-    ctx.scene.next();
-    ctx.reply(`Введите имена дежурных по Кухне и КВТ через пробел. Например: "Саша Маша". Подразумевается, что Саша дежурит по Кухне, а Маша по КВТ.`);
-  },
-  ctx => {
-    // ctx.session.newDuties = ctx.message.text.split(' ');
-    // if (ctx.session.newDuties.length != 2) {
-    //   // return ctx.reply(`Слов через пробел больше или меньше двух.`);
-    //   // logger.info(ctx.scene.step);
-    //   // ctx.scene.next();
-    //   return ctx.scene.step = 2;
-    // }
-    // ctx.reply(`Успех!`)
-    // ctx.scene.leave();
-    ctx.session.num = +ctx.message.text;
-    ctx.reply(ctx.session.num);
-    if (ctx.session.num == 2) {
-      ctx.scene.enter('changeDuties', 2);
-      
-    } else if (ctx.session.num == 3) {
-      ctx.scene.step = 3;
-    } else if (ctx.session.num == 4) {
-      ctx.scene.step = 4;
-    } else {
-      ctx.scene.next();
-      ctx.reply('Здесь!');
-    }
-  },
-  ctx => {
-    ctx.reply('2 Here!');
-    ctx.scene.leave();
-  },
-  ctx => {
-    ctx.reply('3 Here!');
-    ctx.scene.leave();
-  },
-  ctx => {
-    ctx.reply('4 Here!');
-    ctx.scene.leave();
-  },
-);
-const session = new Session();
-const stage = new Stage(scene);
-
-bot.use(session.middleware());
-bot.use(stage.middleware());
-
 bot.command(/Изменить текущих+$/i, (ctx) => {
-  ctx.scene.enter('changeDuties');
+  ctx.scene.enter('Change Duties');
 });
 
 
