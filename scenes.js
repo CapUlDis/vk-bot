@@ -20,8 +20,8 @@ const changeDuties = new Scene('Change Duties',
                 let today = moment();
 
                 for (let i = ctx.session.tableM3.rows.length - 1; i >= 0; i--) {
-                    let dateUp = moment(ctx.session.tableM3.rows[i]['Период'], 'DD-MM-YY');
-                    let weekBefore = moment(ctx.session.tableM3.rows[i]['Период'], 'DD-MM-YY').subtract(7, 'days');
+                    let dateUp = moment(ctx.session.tableM3.rows[i]['Период'], 'DD-MM-YY').endOf('day');
+                    let weekBefore = moment(ctx.session.tableM3.rows[i]['Период'], 'DD-MM-YY').subtract(6, 'days');
                     
                     if (today <= dateUp && today > weekBefore) {
                         ctx.session.currentRow = i;
@@ -85,7 +85,7 @@ const changeDuties = new Scene('Change Duties',
             );
         }
 
-        let newDutyDate = moment(ctx.session.newRecord[2], 'DD-MM-YY');
+        let newDutyDate = moment(ctx.session.newRecord[2], 'DD-MM-YY').endOf('day');
 
         if (newDutyDate.format('L') == 'Invalid date') {
             return ctx.reply(`❗Вы ввели неправильную дату. 
@@ -105,7 +105,7 @@ const changeDuties = new Scene('Change Duties',
             );
         }
 
-        if (newDutyDate > moment().add(7, 'days')) {
+        if (newDutyDate > moment().add(7, 'days').endOf('day')) {
             return ctx.reply(`❗Вы ввели дату, опережающую сегодняшнюю больше, чем на неделю. 
             
                                 📝 Повторите ввод в формате "имя_кухня имя_квт дд.мм.гг" или нажмите "Отмена".`, null, Markup
