@@ -1,6 +1,7 @@
 require('dotenv').config()
-const moment = require('moment');
+const moment = require('moment-timezone');
 moment.locale('ru');
+moment.tz.setDefault('Europe/Moscow');
 const Scene = require('node-vk-bot-api/lib/scene');
 const Markup = require('node-vk-bot-api/lib/markup');
 const { GoogleTable } = require('./spreadsheet');

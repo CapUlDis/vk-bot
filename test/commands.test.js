@@ -2,11 +2,12 @@ require('dotenv').config()
 const proxyquire = require('proxyquire').noPreserveCache();
 const { expect } = require('chai');
 const sinon = require('sinon');
-const moment = require('moment');
+const moment = require('moment-timezone');
 const { GoogleTable } = require('../spreadsheet');
 const logger = require('../logger');
 
 
+moment.tz.setDefault('Europe/Moscow');
 moment.locale('ru');
 moment.updateLocale('ru', {
     longDateFormat : {

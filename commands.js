@@ -1,6 +1,7 @@
 require('dotenv').config()
-const moment = require('moment');
+const moment = require('moment-timezone');
 moment.locale('ru');
+moment.tz.setDefault('Europe/Moscow');
 const logger = require('./logger');
 const { GoogleTable } = require('./spreadsheet');
 
