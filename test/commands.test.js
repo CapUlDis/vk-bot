@@ -42,8 +42,8 @@ describe('Test getCurrentDuties command.', () => {
     });
 
     it('should say: В срок до...', async () => {
-        let today = moment();
-        let weekAfter = moment().add(7, 'days');
+        let today = moment().subtract(1, 'days');
+        let weekAfter = moment().add(6, 'days');
         await testTable.getSheetRows();
         await testTable.addRow({ Период: today.format('L'), Кухня: 'Гусь', КВТ: 'Лось' });
         await testTable.addRow({ Период: weekAfter.format('L'), Кухня: 'Ёрш', КВТ: 'Краб' });

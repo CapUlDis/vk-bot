@@ -18,8 +18,8 @@ const getCurrentDuties = async ctx => {
         let today = moment();
         
         for (let i = tableM3.rows.length - 1; i >= 0; i--) {
-            let dateUp = moment(tableM3.rows[i]['Период'], 'DD-MM-YY');
-            let weekBefore = moment(tableM3.rows[i]['Период'], 'DD-MM-YY').subtract(7, 'days');
+            let dateUp = moment(tableM3.rows[i]['Период'], 'DD-MM-YY').endOf('day');
+            let weekBefore = moment(tableM3.rows[i]['Период'], 'DD-MM-YY').subtract(6, 'days').startOf('day');
             
             if (today <= dateUp && today > weekBefore) {
                 ctx.reply(`В срок до ${dateUp.format('L')} дежурят по кухне - ${tableM3.rows[i]['Кухня']}, по КВТ - ${tableM3.rows[i]['КВТ']}.`);
