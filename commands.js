@@ -26,7 +26,7 @@ const getCurrentDuties = async ctx => {
             let weekBefore = moment(tableM3.rows[i]['Период'], 'DD-MM-YY').subtract(6, 'days');
             
             if (today <= dateUp && today > weekBefore) {
-                ctx.reply(`📅 В срок до ${dateUp.format('L')} дежурят по кухне - ${tableM3.rows[i]['Кухня']}, по КВТ - ${tableM3.rows[i]['КВТ']}.`);
+                ctx.reply(`📅 В срок до ${dateUp.format('L')} дежурят по кухне - ${tableM3.rows[i]['Кухня'].replace(' ✔️', '')}, по КВТ - ${tableM3.rows[i]['КВТ'].replace(' ✔️', '')}.`);
                 break;
             } else if (today > dateUp || i == 0) {
                 ctx.reply(`🆓 На текущий период дежурств не запланировано. 
@@ -77,8 +77,8 @@ const fillScheduleByLastDuties = async ctx => {
         
         for (let i = tableM3.rows.length - 1; i >= 0 && i >= tableM3.rows.length - 3; i--) {
             for (let j = 2; j >= 1; j--) {
-                if (!dutyList.includes(tableM3.rows[i]._rawData[j])) {
-                    dutyList.unshift(tableM3.rows[i]._rawData[j]);
+                if (!dutyList.includes(tableM3.rows[i]._rawData[j].replace(' ✔️', ''))) {
+                    dutyList.unshift(tableM3.rows[i]._rawData[j].replace(' ✔️', ''));
                 }
             }
         }
