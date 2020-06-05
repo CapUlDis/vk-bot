@@ -74,3 +74,9 @@ require('dotenv').config()
 //     const tets = { my: 5, your: 7};
 //     console.log(tets.my);
 // })();
+
+const schedule = require('node-schedule');
+
+const j = schedule.scheduleJob('55 12 * * *', function () {
+    console.log('ass');
+})

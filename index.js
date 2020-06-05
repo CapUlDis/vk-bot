@@ -1,6 +1,7 @@
 require('dotenv').config()
 const express = require('express');
 const bodyParser = require('body-parser');
+const schedule = require('node-schedule');
 const VkBot = require('node-vk-bot-api/lib');
 const Markup = require('node-vk-bot-api/lib/markup');
 const Session = require('node-vk-bot-api/lib/session');
@@ -125,6 +126,24 @@ bot.command(/Чек-лист КВТ+$/i, ctx => {
             2. Следить за наличием туалетной бумаги.
             3. Вымыть пол (возможно, пару раз).`);
 });
+
+// const checkSchedule = schedule.scheduleJob('58 14 * * *', bot.execute('messages.send', {
+//   peer_id: 152694612,
+//   random_id: 0,
+//   message: 'test',
+// }));
+
+bot.execute('messages.send', {
+  random_id: 0,
+  message: 'test',
+  peer_id: 2000000003,
+  group_id: 152694612,
+});
+
+bot.on(ctx => {
+  console.log(ctx);
+})
+
 
 app.use(expressLogger);
 

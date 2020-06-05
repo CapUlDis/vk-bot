@@ -12,3 +12,4 @@ vk > управление > приложения > Bot Pod > настроить 
 
 heroku logs --tail - логи деплоенного приложения
 
+heroku run console --app vk-bot-m3-prod
