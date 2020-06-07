@@ -127,23 +127,10 @@ bot.command(/Чек-лист КВТ+$/i, ctx => {
             3. Вымыть пол (возможно, пару раз).`);
 });
 
-// const checkSchedule = schedule.scheduleJob('58 14 * * *', bot.execute('messages.send', {
-//   peer_id: 152694612,
-//   random_id: 0,
-//   message: 'test',
-// }));
-
-bot.execute('messages.send', {
-  random_id: 0,
-  message: 'test',
-  peer_id: 2000000003,
-  group_id: 152694612,
+const { sendMes } = require('./execute');
+const checkSchedule = schedule.scheduleJob('29 13 * * *', function() {
+  sendMes(bot)
 });
-
-bot.on(ctx => {
-  console.log(ctx);
-})
-
 
 app.use(expressLogger);
 
