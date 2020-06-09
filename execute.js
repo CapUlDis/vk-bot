@@ -6,12 +6,22 @@ const logger = require('./logger');
 const { GoogleTable } = require('./spreadsheet');
 
 
-function sendMes(bot) {
+async function sendMes(bot) {
+    const tableM3 = new GoogleTable({ sheetID: process.env.SPREADSHEET_ID, sheetIndex: process.env.SHEET_INDEX });
+    await tableM3.getSheetRows();
     bot.execute('messages.send', {
       random_id: 0,
-      message: 'test1',
+      message: tableM3.rows[0]['Период'],
       peer_id: 2000000003,
     });
+    function sendAss(bot) {
+        bot.execute('messages.send', {
+            random_id: 0,
+            message: 'asss1',
+            peer_id: 2000000003,
+          });
+    }
+    sendAss(bot);
 }
 
 async function checkAndRemindDuties(bot) {
@@ -22,12 +32,10 @@ async function checkAndRemindDuties(bot) {
         if (tableM3.rows[0] == undefined) { 
             return bot.execute('messages.send', {
                 random_id: 0,
-                message: `📒 График дежурств пустой. 
-        
-                            📝 Заполните график по ссылке https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID} вручную.
-                        
-                            🖲 Или нажмите кнопку "Изменить текущих" для заполнения графика из беседы.`,
                 peer_id: 2000000003,
+                message: `📒 График дежурств пустой. 
+                            📝 Заполните график по ссылке https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID} вручную.
+                            🖲 Или нажмите кнопку "Изменить текущих" для заполнения графика из беседы.`,
             });
         }
 
@@ -37,36 +45,110 @@ async function checkAndRemindDuties(bot) {
         if (today > lastDateInSchedulePlusWeek) {
             return bot.execute('messages.send', {
                 random_id: 0,
-                message: `🕸️ Последняя запись в графике - старше недели. 
-        
-                            📝 Заполните график по ссылке https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID} вручную.
-                        
-                            🖲 Или нажмите кнопку "Изменить текущих" для заполнения графика из беседы.`,
                 peer_id: 2000000003,
+                message: `🕸️ Последняя запись в графике - старше недели. 
+                            📝 Заполните график по ссылке https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID} вручную.
+                            🖲 Или нажмите кнопку "Изменить текущих" для заполнения графика из беседы.`,
             });
         }
         
         let currentRow;
+        let previousRow;
 
         for (let i = tableM3.rows.length - 1; i >= 0; i--) {
             let dateInSchedule = moment(tableM3.rows[i]['Период'], 'DD-MM-YY').endOf('day');
             let weekBefore = moment(tableM3.rows[i]['Период'], 'DD-MM-YY').subtract(6, 'days');
 
-            if (today > dateInSchedule) {
+            if (today <= dateInSchedule && today > weekBefore) {
                 currentRow = i;
+                previousRow = currentRow != 0 ? currentRow - 1 : previousRow;
                 break;
-            } else if ()
+            } else if (today > dateInSchedule || i == 0) {
+                previousRow = i;
+                break;
+            }
         }
 
+        if (previousRow != undefined) {
+            let previousDate = moment(tableM3.rows[previousRow]['Период'], 'DD-MM-YY');
+            let previousDatePlus4days = moment(tableM3.rows[previousRow]['Период'], 'DD-MM-YY').add(4, 'days').endOf('day');
+            
+            if (today <= previousDatePlus4days) {
+                let kitchen = tableM3.rows[previousRow]['Кухня'].includes('✔️') ? { check: true } : { check: false, duty: tableM3.rows[previousRow]['Кухня']};
+                let kvt = tableM3.rows[previousRow]['КВТ'].includes('✔️') ? { check: true } : { check: false, duty: tableM3.rows[previousRow]['КВТ'] };
 
+                if (!(kitchen.check && kvt.check)) {
+                    let lag = today.diff(previousDate, 'days') != 1 ? `${today.diff(previousDate, 'days')} дня` : '1 день';
+                    bot.execute('messages.send', {
+                        random_id: 0,
+                        peer_id: 2000000003,
+                        message: `😩 Дежурство просрочено на ${lag} по ${!(kitchen.check || kvt.check) ? 'Кухне и КВТ' : (kitchen == true ? 'КВТ' : 'Кухне')}.
+                                    🙏 ${!(kitchen.check || kvt.check) ? `${kitchen.duty} и ${kvt.duty}` : (kitchen.check ? kvt.duty : kitchen.duty)}, пожалуйста, подежурьте в ближайшее время и подтвердите завершение с помощью кнопки "Завершить дежурство".
+                                    ✍🏻 Либо договоритесь подежурить за другого жильца в его смену взамен того, чтобы он(а) подежурил(а) за вас в ближайшее время.`,
+                    });
+                }
+            }
+        }
+
+        if (currentRow != undefined) {
+            let currentDate = moment(tableM3.rows[currentRow]['Период'], 'DD-MM-YY').endOf('day');
+            
+            if (currentDate.diff(today, 'days') == 6) {
+                bot.execute('messages.send', {
+                random_id: 0,
+                peer_id: 2000000003,
+                message: `🧹 В срок до ${currentDate.format('L')} дежурят по кухне - ${tableM3.rows[currentRow]['Кухня']}, по КВТ - ${tableM3.rows[currentRow]['КВТ']}. 
+                            📅 Завершайте дежурство не раньше двух дней до окончания срока. 
+                            🙏 Постарайтесь завершить уборку в срок.
+                            ✔️ Подтвердите завершение дежурства с помощью кнопки "Завершить дежурство".
+                            ✍️ Изменить текущих дежурных можно с помощью кнопки "Изменить текущих".`,
+                });
+            }
+            
+            if (currentDate.diff(today, 'days') == 2) {
+                bot.execute('messages.send', {
+                random_id: 0,
+                peer_id: 2000000003,
+                message: `🧹 Осталось два дня до завершения дежурства. Дежурят по кухне - ${tableM3.rows[currentRow]['Кухня']}, по КВТ - ${tableM3.rows[currentRow]['КВТ']}. 
+                            🙏 Постарайтесь завершить уборку в срок.            
+                            ✔️ Завтра можно будет подтвердить завершение дежурства с помощью кнопки "Завершить дежурство". 
+                            ❗️ Если у вас не получается подежурить на этой неделе, договоритесь с кем-нибудь о замене и измените текущих дежурных с помощью кнопки "Изменить текущих".`,
+                });
+            }
+
+            if (currentDate.diff(today, 'days') == 0) {
+                let kitchen = tableM3.rows[currentRow]['Кухня'].includes('✔️') ? { check: true } : { check: false, duty: tableM3.rows[currentRow]['Кухня']};
+                let kvt = tableM3.rows[currentRow]['КВТ'].includes('✔️') ? { check: true } : { check: false, duty: tableM3.rows[currentRow]['КВТ'] };
+                
+                if (!(kitchen.check && kvt.check)) {
+                    bot.execute('messages.send', {
+                    random_id: 0,
+                    peer_id: 2000000003,
+                    message: `🧹 Сегодня день завершения дежурства.
+                                ⏳ Ещё не завершил(а)(и) дежурство ${!(kitchen.check || kvt.check) ? `${kitchen.duty} и ${kvt.duty}` : (kitchen.check ? kvt.duty : kitchen.duty)}.
+                                🙏 Пожалуйста, постарайтесь сегодня закончить уборку.
+                                ✔️ Если всё убрано, подтвердите дежурство с помощью кнопки "Завершить дежурство". 
+                                ❗️ Если у вас не получается подежурить на этой неделе, договоритесь с кем-нибудь о замене и измените текущих дежурных с помощью кнопки "Изменить текущих".`,
+                    });
+                }
+                
+            }
+        } else {
+            bot.execute('messages.send', {
+            random_id: 0,
+            peer_id: 2000000003,
+            message: `🆓 На текущий период дежурств не запланировано.
+                        📝 Заполните график вручную, с помощью кнопки "Изменить текущих" или кнопки "Автозаполнение графика".`,
+            });
+        }
     } catch (error) {
         logger.error(error);
-        bot.execute('messages.send', {
+        return bot.execute('messages.send', {
             random_id: 0,
-            message: '❗В результате ежедневной проверки дежурных что-то пошло не так с таблицей. Проверьте, что таблица заполнена правильно.',
             peer_id: 2000000003,
+            message: '❗В результате ежедневной проверки дежурных что-то пошло не так с таблицей. Проверьте, что таблица заполнена правильно.',
         });
     }
 }
 
-module.exports = { sendMes };
+module.exports = { sendMes, checkAndRemindDuties };

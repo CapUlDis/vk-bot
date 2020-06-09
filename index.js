@@ -128,9 +128,11 @@ bot.command(/Чек-лист КВТ+$/i, ctx => {
 });
 
 const { sendMes } = require('./execute');
-const checkSchedule = schedule.scheduleJob('29 13 * * *', function() {
-  sendMes(bot)
-});
+const { checkAndRemindDuties  } = require('./execute');
+(async () => { await checkAndRemindDuties(bot) })();
+// const checkSchedule = schedule.scheduleJob('30 37 12 * * *', async function() {
+//   await checkAndRemindDuties(bot);
+// });
 
 app.use(expressLogger);
 
