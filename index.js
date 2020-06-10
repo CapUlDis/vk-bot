@@ -48,11 +48,18 @@ bot.command(/Дежурства+$/i, ctx => {
     ctx.reply('Выбери действие:', null, Markup
       .keyboard([
         [
-          Markup.button('Показать текущих', 'positive'),
+          Markup.button('Подтвердить дежурство', 'positive'),
           Markup.button('Изменить текущих', 'negative')
         ],
         [
+          Markup.button('Показать текущих'),
           Markup.button('Автозаполнение графика'),
+        ],
+        [
+          Markup.button('Чек-лист кухни'),
+          Markup.button('Чек-лист КВТ'),
+        ],
+        [
           Markup.button({
             action: {
               type: 'open_link',
@@ -61,10 +68,6 @@ bot.command(/Дежурства+$/i, ctx => {
               payload: JSON.stringify({ url: `https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}` })
             }
           }),
-        ],
-        [
-          Markup.button('Чек-лист кухни'),
-          Markup.button('Чек-лист КВТ'),
           Markup.button('Меню', 'primary'),
         ]
       ])
@@ -130,6 +133,15 @@ bot.command(/Чек-лист КВТ+$/i, ctx => {
 
 const checkAndRemindSchedule = schedule.scheduleJob('00 18 * * *', async function() {
   await checkAndRemindDuties(bot);
+});
+
+bot.on(async ctx => {
+  let user_id = ctx.message.from_id;
+  let res = await bot.execute('users.get', {
+    user_ids: user_id,
+    fields: 'screen_name',
+  });
+  console.log(res[0].screen_name);
 });
 
 app.use(expressLogger);

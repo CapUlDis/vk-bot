@@ -12,13 +12,13 @@ async function sendMes(bot) {
     bot.execute('messages.send', {
       random_id: 0,
       message: tableM3.rows[0]['Период'],
-      peer_id: 2000000003,
+      peer_id: process.env.CHAT_ID,
     });
     function sendAss(bot) {
         bot.execute('messages.send', {
             random_id: 0,
             message: 'asss1',
-            peer_id: 2000000003,
+            peer_id: process.env.CHAT_ID,
           });
     }
     sendAss(bot);
@@ -32,7 +32,7 @@ async function checkAndRemindDuties(bot) {
         if (tableM3.rows[0] == undefined) { 
             return bot.execute('messages.send', {
                 random_id: 0,
-                peer_id: 2000000003,
+                peer_id: process.env.CHAT_ID,
                 message: `📒 График дежурств пустой. 
                             📝 Заполните график по ссылке https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID} вручную.
                             🖲 Или нажмите кнопку "Изменить текущих" для заполнения графика из беседы.`,
@@ -45,7 +45,7 @@ async function checkAndRemindDuties(bot) {
         if (today > lastDateInSchedulePlusWeek) {
             return bot.execute('messages.send', {
                 random_id: 0,
-                peer_id: 2000000003,
+                peer_id: process.env.CHAT_ID,
                 message: `🕸️ Последняя запись в графике - старше недели. 
                             📝 Заполните график по ссылке https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID} вручную.
                             🖲 Или нажмите кнопку "Изменить текущих" для заполнения графика из беседы.`,
@@ -81,7 +81,7 @@ async function checkAndRemindDuties(bot) {
                     let lag = today.diff(previousDate, 'days') != 1 ? `${today.diff(previousDate, 'days')} дня` : '1 день';
                     bot.execute('messages.send', {
                         random_id: 0,
-                        peer_id: 2000000003,
+                        peer_id: process.env.CHAT_ID,
                         message: `😩 Дежурство просрочено на ${lag} по ${!(kitchen.check || kvt.check) ? 'Кухне и КВТ' : (kitchen == true ? 'КВТ' : 'Кухне')}.
                                     🙏 ${!(kitchen.check || kvt.check) ? `${kitchen.duty} и ${kvt.duty}` : (kitchen.check ? kvt.duty : kitchen.duty)}, пожалуйста, подежурьте в ближайшее время и подтвердите завершение с помощью кнопки "Завершить дежурство".
                                     ✍🏻 Либо договоритесь подежурить за другого жильца в его смену взамен того, чтобы он(а) подежурил(а) за вас в ближайшее время.`,
@@ -96,7 +96,7 @@ async function checkAndRemindDuties(bot) {
             if (currentDate.diff(today, 'days') == 6) {
                 bot.execute('messages.send', {
                 random_id: 0,
-                peer_id: 2000000003,
+                peer_id: process.env.CHAT_ID,
                 message: `🧹 В срок до ${currentDate.format('L')} дежурят по кухне - ${tableM3.rows[currentRow]['Кухня']}, по КВТ - ${tableM3.rows[currentRow]['КВТ']}. 
                             📅 Завершайте дежурство не раньше двух дней до окончания срока. 
                             🙏 Постарайтесь завершить уборку в срок.
@@ -108,7 +108,7 @@ async function checkAndRemindDuties(bot) {
             if (currentDate.diff(today, 'days') == 2) {
                 bot.execute('messages.send', {
                 random_id: 0,
-                peer_id: 2000000003,
+                peer_id: process.env.CHAT_ID,
                 message: `🧹 Осталось два дня до завершения дежурства. Дежурят по кухне - ${tableM3.rows[currentRow]['Кухня']}, по КВТ - ${tableM3.rows[currentRow]['КВТ']}. 
                             🙏 Постарайтесь завершить уборку в срок.            
                             ✔️ Завтра можно будет подтвердить завершение дежурства с помощью кнопки "Завершить дежурство". 
@@ -123,7 +123,7 @@ async function checkAndRemindDuties(bot) {
                 if (!(kitchen.check && kvt.check)) {
                     bot.execute('messages.send', {
                     random_id: 0,
-                    peer_id: 2000000003,
+                    peer_id: process.env.CHAT_ID,
                     message: `🧹 Сегодня день завершения дежурства.
                                 ⏳ Ещё не завершил(а)(и) дежурство ${!(kitchen.check || kvt.check) ? `${kitchen.duty} и ${kvt.duty}` : (kitchen.check ? kvt.duty : kitchen.duty)}.
                                 🙏 Пожалуйста, постарайтесь сегодня закончить уборку.
@@ -136,7 +136,7 @@ async function checkAndRemindDuties(bot) {
         } else {
             bot.execute('messages.send', {
             random_id: 0,
-            peer_id: 2000000003,
+            peer_id: process.env.CHAT_ID,
             message: `🆓 На текущий период дежурств не запланировано.
                         📝 Заполните график вручную, с помощью кнопки "Изменить текущих" или кнопки "Автозаполнение графика".`,
             });
@@ -145,7 +145,7 @@ async function checkAndRemindDuties(bot) {
         logger.error(error);
         return bot.execute('messages.send', {
             random_id: 0,
-            peer_id: 2000000003,
+            peer_id: process.env.CHAT_ID,
             message: '❗В результате ежедневной проверки дежурных что-то пошло не так с таблицей. Проверьте, что таблица заполнена правильно.',
         });
     }

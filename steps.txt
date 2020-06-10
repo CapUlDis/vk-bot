@@ -1,7 +1,7 @@
 npm init - инициализирует инфо-файл проекта с зависимостями
 npm install <package> --save - установить пакет и прописать его в package.json
 
-sudo lsof -i:80
+sudo lsof -i:3000
 
 sudo kill -9 <PID>
 
