@@ -9,6 +9,7 @@ const Stage = require('node-vk-bot-api/lib/stage');
 const { getCurrentDuties } = require('./commands');
 const { fillScheduleByLastDuties } = require('./commands');
 const { changeDuties } = require('./scenes');
+const { checkAndRemindDuties  } = require('./execute');
 
 
 const logger = require('./logger');
@@ -127,12 +128,9 @@ bot.command(/Чек-лист КВТ+$/i, ctx => {
             3. Вымыть пол (возможно, пару раз).`);
 });
 
-const { sendMes } = require('./execute');
-const { checkAndRemindDuties  } = require('./execute');
-(async () => { await checkAndRemindDuties(bot) })();
-// const checkSchedule = schedule.scheduleJob('30 37 12 * * *', async function() {
-//   await checkAndRemindDuties(bot);
-// });
+const checkAndRemindSchedule = schedule.scheduleJob('00 18 * * *', async function() {
+  await checkAndRemindDuties(bot);
+});
 
 app.use(expressLogger);
 
