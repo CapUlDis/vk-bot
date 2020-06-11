@@ -103,4 +103,112 @@ const fillScheduleByLastDuties = async ctx => {
     }
 }
 
-module.exports = { getCurrentDuties, fillScheduleByLastDuties };
+const confirmDuty = async ctx => {
+    try{
+        const tableM3 = new GoogleTable({ sheetID: process.env.SPREADSHEET_ID, sheetIndex: process.env.SHEET_INDEX });
+        await tableM3.getSheetRows(process.env.SHEET_INDEX);
+
+        // проверяемя что таблица не пустая
+        if (tableM3.rows[0] == undefined) { // если пустая
+            return ctx.reply(`📒 График дежурств пустой. Нечего подтверждать.
+                                🖲 Чтобы заполнить график на ближайший период, нажмите кнопку "Изменить дежурных" либо внесити дежурных в таблицу вручную.`);
+        }
+
+        let today = moment();
+        let lastDateInSchedule = moment(tableM3.rows[tableM3.rows.length - 1]['Период'], 'DD-MM-YY').endOf('day');
+
+        if (today.diff(lastDateInSchedule, 'days') >= 4) {
+            return ctx.reply(`🕸️ Последняя запись в таблице дежурств старше чётырёх дней. Нечего подтверждать.
+                                🖲 Чтобы заполнить график на ближайший период, нажмите кнопку "Изменить дежурных" либо внесити дежурных в таблицу вручную.`);
+        }
+
+        let currentRow;
+        let previousRow;
+
+        for (let i = tableM3.rows.length - 1; i >= 0; i--) {
+            let dateInSchedule = moment(tableM3.rows[i]['Период'], 'DD-MM-YY').endOf('day');
+            let weekBefore = moment(tableM3.rows[i]['Период'], 'DD-MM-YY').subtract(6, 'days');
+
+            if (today <= dateInSchedule && today >= weekBefore) {
+                currentRow = i;
+                previousRow = currentRow != 0 ? currentRow - 1 : previousRow;
+                break;
+            } else if (today > dateInSchedule) {
+                previousRow = i;
+                break;
+            } else if (i == 0) {
+                currentRow = i;
+                break;
+            }
+        }
+        
+        const { bot } = require('./index');
+        let res = await bot.execute('users.get', {
+            user_ids: ctx.message.from_id,
+            fields: 'screen_name',
+        });
+        let dutyName = res[0].screen_name;
+
+        if (previousRow != undefined) {
+            let previousDate = moment(tableM3.rows[previousRow]['Период'], 'DD-MM-YY').endOf('day');
+
+            if (today.diff(previousDate, 'days') <= 4) {
+                let kitchen = tableM3.rows[previousRow]['Кухня'].includes('✔️') ? { check: true } : { check: false, duty: tableM3.rows[previousRow]['Кухня']};
+                let kvt = tableM3.rows[previousRow]['КВТ'].includes('✔️') ? { check: true } : { check: false, duty: tableM3.rows[previousRow]['КВТ'] };
+
+                if (!kitchen.check && kitchen.duty.includes(dutyName)) {
+                    tableM3.rows[previousRow]['Кухня'] += ' ✔️';
+                    await tableM3.rows[previousRow].save();
+                    return ctx.reply(`✔️ Дежурство по Кухне за ${tableM3.rows[previousRow]['Период']} подтверждено!
+                                        🙏 Пожалуйста, в следующий раз постарайтесь завершить дежурство вовремя!`);
+                }
+
+                if (!kvt.check && kvt.duty.includes(dutyName)) {
+                    tableM3.rows[previousRow]['КВТ'] += ' ✔️';
+                    await tableM3.rows[previousRow].save();
+                    return ctx.reply(`✔️ Дежурство по КВТ за ${tableM3.rows[previousRow]['Период']} подтверждено! 
+                                        🙏 Пожалуйста, в следующий раз постарайтесь завершить дежурство вовремя!`);
+                }
+            }
+        }
+
+        if (currentRow != undefined) {
+            if (currentRow == 0) {
+                return ctx.reply(`📅 Ближайший срок дежурства: ${tableM3.rows[currentRow]['Период']} - позднее недели текущего момента. 
+                                    🔍 Проверьте график и вручную поставьте дежурство на ближайшую неделю.`)
+            }
+
+            let currentDate = moment(tableM3.rows[currentRow]['Период'], 'DD-MM-YY').endOf('day');
+
+            if (currentDate.diff(today, 'days') > 2) {
+                return ctx.reply(`✖️ Дежурство не подтверждено! Подтвердить дежурство можно не раньше двух дней до окончания периода.
+                                    📅 Срок окончания текущего дежурства: ${tableM3.rows[currentRow]['Период']}.`);
+            }
+
+            let kitchen = tableM3.rows[currentRow]['Кухня'].includes('✔️') ? { check: true } : { check: false, duty: tableM3.rows[currentRow]['Кухня']};
+            let kvt = tableM3.rows[currentRow]['КВТ'].includes('✔️') ? { check: true } : { check: false, duty: tableM3.rows[currentRow]['КВТ'] };
+
+            if (!kitchen.check && kitchen.duty.includes(dutyName)) {
+                tableM3.rows[currentRow]['Кухня'] += ' ✔️';
+                await tableM3.rows[currentRow].save();
+                return ctx.reply(`✔️ Дежурство по Кухне за ${tableM3.rows[currentRow]['Период']} подтверждено! 
+                                    👍 Спасибо за своевременное дежурство!`);
+            }
+
+            if (!kvt.check && kvt.duty.includes(dutyName)) {
+                tableM3.rows[currentRow]['КВТ'] += ' ✔️';
+                await tableM3.rows[currentRow].save();
+                return ctx.reply(`✔️ Дежурство по КВТ за ${tableM3.rows[currentRow]['Период']} подтверждено! 
+                                    👍 Спасибо за своевременное дежурство!`);
+            }
+        }
+
+        return ctx.reply(`✖️ Вашего имени среди дежурных за прошедший и текущий период не найдено!`);
+
+    } catch (error) {
+        logger.error(error);
+        return ctx.reply('❗Что-то пошло не так с таблицей. Проверьте, что таблица заполнена правильно.');
+    }
+}
+
+module.exports = { getCurrentDuties, fillScheduleByLastDuties, confirmDuty };

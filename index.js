@@ -8,6 +8,7 @@ const Session = require('node-vk-bot-api/lib/session');
 const Stage = require('node-vk-bot-api/lib/stage');
 const { getCurrentDuties } = require('./commands');
 const { fillScheduleByLastDuties } = require('./commands');
+const { confirmDuty } = require('./commands');
 const { changeDuties } = require('./scenes');
 const { checkAndRemindDuties  } = require('./execute');
 
@@ -77,6 +78,8 @@ bot.command(/Дежурства+$/i, ctx => {
   }
 });
 
+bot.command(/Подтвердить\sдежурство+$/i, confirmDuty);
+
 bot.command(/Показать\sтекущих+$/i, getCurrentDuties);
 
 bot.command(/Автозаполнение\sграфика+$/i, fillScheduleByLastDuties);
@@ -135,14 +138,14 @@ const checkAndRemindSchedule = schedule.scheduleJob('00 18 * * *', async functio
   await checkAndRemindDuties(bot);
 });
 
-bot.on(async ctx => {
-  let user_id = ctx.message.from_id;
-  let res = await bot.execute('users.get', {
-    user_ids: user_id,
-    fields: 'screen_name',
-  });
-  console.log(res[0].screen_name);
-});
+// bot.on(async ctx => {
+//   let user_id = ctx.message.from_id;
+//   let res = await bot.execute('users.get', {
+//     user_ids: user_id,
+//     fields: 'screen_name',
+//   });
+//   console.log(res[0].screen_name);
+// });
 
 app.use(expressLogger);
 
@@ -151,3 +154,6 @@ app.use(bodyParser.json());
 app.post('/', bot.webhookCallback);
 
 app.listen(process.env.PORT || 3000);
+
+
+module.exports = { bot };
