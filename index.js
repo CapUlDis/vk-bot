@@ -26,6 +26,10 @@ bot.use(session.middleware());
 
 bot.use(stage.middleware());
 
+bot.on(ctx => {
+  logger.info(ctx);
+});
+
 bot.command(/Меню+$/i, ctx => {
     ctx.reply('Выбери раздел:', null, Markup
       .keyboard([
@@ -126,9 +130,6 @@ bot.command(/Чек-лист КВТ+$/i, ctx => {
             3. Вымыть пол (возможно, пару раз).`);
 });
 
-bot.on(ctx => {
-  logger.info(ctx);
-});
 
 app.use(expressLogger);
 
