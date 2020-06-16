@@ -138,14 +138,6 @@ const checkAndRemindSchedule = schedule.scheduleJob('00 18 * * *', async functio
   await checkAndRemindDuties(bot);
 });
 
-// bot.on(async ctx => {
-//   let user_id = ctx.message.from_id;
-//   let res = await bot.execute('users.get', {
-//     user_ids: user_id,
-//     fields: 'screen_name',
-//   });
-//   console.log(res[0].screen_name);
-// });
 
 app.use(expressLogger);
 

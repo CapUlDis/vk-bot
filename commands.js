@@ -13,9 +13,7 @@ const getCurrentDuties = async ctx => {
         
         if (tableM3.rows[0] == undefined) {
             ctx.reply(`⚠ График дежурств пустой. 
-            
                         📝 Заполните график по ссылке https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID} вручную.
-                        
                         🖲 Или нажмите кнопку "Изменить текущих" для заполнения графика из беседы.`);
         }
         
@@ -30,9 +28,7 @@ const getCurrentDuties = async ctx => {
                 break;
             } else if (today > dateUp || i == 0) {
                 ctx.reply(`🆓 На текущий период дежурств не запланировано. 
-                
                             📝 Заполните график по ссылке https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID} вручную.
-                            
                             🖲 Либо нажмите кнопку "Изменить текущих" для заполнения графика из беседы или кнопку "Автозаполнение графика" для автоматического заполнения на основе предыдущих дежурств.`);
                 break;
             }
@@ -49,16 +45,13 @@ const fillScheduleByLastDuties = async ctx => {
         await tableM3.getSheetRows();
         
         if (tableM3.rows[0] == undefined) { return ctx.reply(`⚠ График пустой, нечем заполнять.
-                                                                
                                                                 📝 Заполните график по ссылке https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID} вручную.
-                            
                                                                 🖲 Или нажмите кнопку "Изменить текущих" для заполнения графика из беседы.`) };
         
         let today = moment();
         let lastDateInScheduleMinus2weeks = moment(tableM3.rows[tableM3.rows.length - 1]['Период'], 'DD-MM-YY').subtract(14, 'days');
         
         if (today < lastDateInScheduleMinus2weeks) { return ctx.reply(`⚠ Дежурство составлено как минимум на две недели вперёд. Не торопитесь планировать так далеко в этом изменчивом мире.
-                                                                    
                                                                         📅 График: https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}`) };
         let lastDateInSchedule = moment(tableM3.rows[tableM3.rows.length - 1]['Период'], 'DD-MM-YY');
         let newDutyDate = null;
