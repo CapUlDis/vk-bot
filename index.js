@@ -126,6 +126,10 @@ bot.command(/Чек-лист КВТ+$/i, ctx => {
             3. Вымыть пол (возможно, пару раз).`);
 });
 
+bot.on(ctx => {
+  console.log(ctx);
+});
+
 app.use(expressLogger);
 
 app.use(bodyParser.json());
