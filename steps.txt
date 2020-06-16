@@ -5,7 +5,12 @@ sudo lsof -i:80
 
 sudo kill -9 <PID>
 
+./ngrok http 3000
+
 
 vk > управление > приложения > Bot Pod > настроить приложение  -  дать доступ боту к беседе
 
 heroku logs --tail - логи деплоенного приложения
+
+heroku run bash
+
