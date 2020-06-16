@@ -12,3 +12,5 @@ vk > управление > приложения > Bot Pod > настроить 
 
 heroku logs --tail - логи деплоенного приложения
 
+heroku run bash
+

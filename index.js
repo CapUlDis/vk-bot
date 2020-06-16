@@ -127,7 +127,7 @@ bot.command(/Чек-лист КВТ+$/i, ctx => {
 });
 
 bot.on(ctx => {
-  console.log(ctx);
+  logger.info(ctx);
 });
 
 app.use(expressLogger);
