@@ -6,24 +6,6 @@ const logger = require('./logger');
 const { GoogleTable } = require('./spreadsheet');
 
 
-async function sendMes(bot) {
-    const tableM3 = new GoogleTable({ sheetID: process.env.SPREADSHEET_ID, sheetIndex: process.env.SHEET_INDEX });
-    await tableM3.getSheetRows();
-    bot.execute('messages.send', {
-      random_id: 0,
-      message: tableM3.rows[0]['Период'],
-      peer_id: process.env.CHAT_ID,
-    });
-    function sendAss(bot) {
-        bot.execute('messages.send', {
-            random_id: 0,
-            message: 'asss1',
-            peer_id: process.env.CHAT_ID,
-          });
-    }
-    sendAss(bot);
-}
-
 async function checkAndRemindDuties(bot) {
     try {
         const tableM3 = new GoogleTable({ sheetID: process.env.SPREADSHEET_ID, sheetIndex: process.env.SHEET_INDEX });
@@ -151,4 +133,4 @@ async function checkAndRemindDuties(bot) {
     }
 }
 
-module.exports = { sendMes, checkAndRemindDuties };
+module.exports = { checkAndRemindDuties };
