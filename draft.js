@@ -80,3 +80,12 @@ const schedule = require('node-schedule');
 const j = schedule.scheduleJob('55 12 * * *', function () {
     console.log('ass');
 })
+
+let str = 'asss [id2139812732|@fuck_ass]'
+
+
+/@[^\]]+/
+
+/\[.+?\]/
+
+/\[id\d+\|@.+?\]/
